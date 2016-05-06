@@ -2,12 +2,21 @@
 
 1) looks like all GIP Eat/Drink categories have the same name: food-and-drink - should be checked how to get needed us categories: Bars, Restaurants, FAST-food, Cafe
 
-2) GIP SPA/Hears has the same name: beauty-and-spas - should be checked how to get needed us categories: Spa, Hears, Ьanicure
+Ya dumau nam priidetsya, chotya by probovat delenie na bary/restarany/cafe, fastfood uberem - ya ne dumau chto ono u nich bydet kak-to otrazeno
+
+2) GIP SPA/Hears has the same name: beauty-and-spas - should be checked how to get needed us categories: Spa, Hears, manicure
+other treatments
+aga - otodavar, skoree vsego po nazvaniu sdelki
 
 3) GIP Shop has catogories:
 Women - similar to women
 Men - similar to men
 For home - can use: home-improvement|auto-and-home-improvement|food-and-drink-goods|home-and-garden-goods|household-essentials
+dobavlu slaid
 Kids - similar to baby-kids-and-toys
 
+cool
+
 4) GIP travel can use: accommodation|bed-and-breakfast-travel|cabin-travel|cruise-travel|hotels|resort-travel|tour-travel|vacation-rental-travel
+
+super! Nado dobavit slaid posle strany
