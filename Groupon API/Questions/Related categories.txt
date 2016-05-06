@@ -1,0 +1,13 @@
+﻿based on: http://partner-int-api.groupon.com/help/deal-api#dapi_categories
+
+1) looks like all GIP Eat/Drink categories have the same name: food-and-drink - should be checked how to get needed us categories: Bars, Restaurants, FAST-food, Cafe
+
+2) GIP SPA/Hears has the same name: beauty-and-spas - should be checked how to get needed us categories: Spa, Hears, Ьanicure
+
+3) GIP Shop has catogories:
+Women - similar to women
+Men - similar to men
+For home - can use: home-improvement|auto-and-home-improvement|food-and-drink-goods|home-and-garden-goods|household-essentials
+Kids - similar to baby-kids-and-toys
+
+4) GIP travel can use: accommodation|bed-and-breakfast-travel|cabin-travel|cruise-travel|hotels|resort-travel|tour-travel|vacation-rental-travel
