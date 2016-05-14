@@ -1,0 +1,75 @@
+potom najdi video lekcii Java dlja testirovshikov i posle perehodi na selenium video ot Alekseja Baranceva
+
+
+
+<a href="#" class="button"/>GIP</a>
+
+
+.button{text-decoration:none; text-align:center; 
+ padding:13px 7px; 
+ border:none; 
+ -webkit-border-radius:34px;
+ -moz-border-radius:34px; 
+ border-radius: 34px; 
+ font:16px Verdana, Geneva, sans-serif; 
+ font-weight:bold; 
+ color:#fafafa; 
+ background-color:#37d463; 
+ background-image: -moz-linear-gradient(top, #37d463 0%, #14b30e 100%); 
+ background-image: -webkit-linear-gradient(top, #37d463 0%, #14b30e 100%); 
+ background-image: -o-linear-gradient(top, #37d463 0%, #14b30e 100%); 
+ background-image: -ms-linear-gradient(top, #37d463 0% ,#14b30e 100%); 
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#14b30e', endColorstr='#14b30e',GradientType=0 ); 
+ background-image: linear-gradient(top, #37d463 0% ,#14b30e 100%);   
+ -webkit-box-shadow:inset 0,0,0px 0,0,0px 1,1,1px #ffffff,#ffffff,#ffffff;  -moz-box-shadow:inset 0px 0px 1px #ffffff;  box-shadow:inset 0px 0px 1px #ffffff;  
+ opacity:0.8; 
+ -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80); 
+ filter: alpha(opacity=80); 
+ text-shadow: -12px -5px 9px #cccfc9; 
+ filter: dropshadow(color=#cccfc9, offx=-12, offy=-5); }.button:hover{
+ padding:13px 7px; 
+ border:none; 
+ -webkit-border-radius:34px;
+ -moz-border-radius:34px; 
+ border-radius: 34px; 
+ font:16px Verdana, Geneva, sans-serif; 
+ font-weight:bold; 
+ color:#fafafa; 
+ background-color:#f51818; 
+ background-image: -moz-linear-gradient(top, #f51818 0%, #f2113e 100%); 
+ background-image: -webkit-linear-gradient(top, #f51818 0%, #f2113e 100%); 
+ background-image: -o-linear-gradient(top, #f51818 0%, #f2113e 100%); 
+ background-image: -ms-linear-gradient(top, #f51818 0% ,#f2113e 100%); 
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2113e', endColorstr='#f2113e',GradientType=0 ); 
+ background-image: linear-gradient(top, #f51818 0% ,#f2113e 100%);   
+ -webkit-box-shadow:2px 1px -1px #bababa, inset 0px 0px 1px #ffffff; 
+ -moz-box-shadow: 2px 1px -1px #bababa,  inset 0px 0px 1px #ffffff;  
+ box-shadow:2px 1px -1px #bababa, inset 0px 0px 1px #ffffff;  
+ opacity:0.8; 
+ -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80); 
+ filter: alpha(opacity=80); 
+ text-shadow: -10px 1px 9px #cccfc9; 
+ filter: dropshadow(color=#cccfc9, offx=-10, offy=1);}.button:active{
+ padding:13px 6px; 
+ border:none; 
+ -webkit-border-radius:27px;
+ -moz-border-radius:27px; 
+ border-radius: 27px; 
+ font:16px Verdana, Geneva, sans-serif; 
+ font-weight:bold; 
+ color:#fafafa; 
+ background-color:#37d463; 
+ background-image: -moz-linear-gradient(top, #37d463 0%, #14b30e 100%); 
+ background-image: -webkit-linear-gradient(top, #37d463 0%, #14b30e 100%); 
+ background-image: -o-linear-gradient(top, #37d463 0%, #14b30e 100%); 
+ background-image: -ms-linear-gradient(top, #37d463 0% ,#14b30e 100%); 
+ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#14b30e', endColorstr='#14b30e',GradientType=0 ); 
+ background-image: linear-gradient(top, #37d463 0% ,#14b30e 100%);   
+ -webkit-box-shadow:-15px -10px -5px #fffafa, inset 0px 0px 1px #ffffff; 
+ -moz-box-shadow: -15px -10px -5px #fffafa,  inset 0px 0px 1px #ffffff;  
+ box-shadow:-15px -10px -5px #fffafa, inset 0px 0px 1px #ffffff;  
+ opacity:0.8; 
+ -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80); 
+ filter: alpha(opacity=80); 
+ text-shadow: -12px -15px 9px #f6f7f4; 
+ filter: dropshadow(color=#f6f7f4, offx=-12, offy=-15);}
