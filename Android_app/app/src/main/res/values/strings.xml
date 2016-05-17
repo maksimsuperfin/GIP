@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GIP</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="google_app_id">just-charger-130718</string>
+</resources>
