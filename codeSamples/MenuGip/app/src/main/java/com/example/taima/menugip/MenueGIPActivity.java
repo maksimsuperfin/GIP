@@ -1,5 +1,12 @@
 package com.example.taima.menugip;
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 /**
  * Created by taima on 17/05/2016.
  */
@@ -7,7 +14,7 @@ public class MenueGIPActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.activity_main);
     }
 
     // Initiating Menu XML file (menu.xml)
@@ -15,7 +22,7 @@ public class MenueGIPActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.layout.menu, menu);
+        menuInflater.inflate(R.layout.menu, menu); // TODO: in resources no any item with name "menu"
         return true;
     }
 
@@ -32,11 +39,11 @@ public class MenueGIPActivity extends Activity {
             case R.id.menu_bookmark:
                 // Single menu item is selected do something
                 // Ex: launching new activity/screen or show alert message
-                Toast.makeText(AndroidMenusActivity.this, "Bookmark is Selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MenueGIPActivity.this, "Bookmark is Selected", Toast.LENGTH_SHORT).show();
                 return true;
 
-            case R.id.menu_save:
-                Toast.makeText(AndroidMenusActivity.this, "Save is Selected", Toast.LENGTH_SHORT).show();
+            /*case R.id.menu_save:
+                Toast.makeText(MenueGIPActivity.this, "Save is Selected", Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.menu_search:
@@ -53,7 +60,7 @@ public class MenueGIPActivity extends Activity {
 
             case R.id.menu_preferences:
                 Toast.makeText(AndroidMenusActivity.this, "Preferences is Selected", Toast.LENGTH_SHORT).show();
-                return true;
+                return true;*/
 
             default:
                 return super.onOptionsItemSelected(item);
