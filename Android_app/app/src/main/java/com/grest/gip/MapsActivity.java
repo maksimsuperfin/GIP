@@ -1,9 +1,12 @@
 package com.grest.gip;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 /*import android.view.View;
 import android.widget.EditText;*/
 
@@ -38,13 +41,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
 /**
  * Created by Maksim.Superfin on 5/13/2016.
  */
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnInfoWindowClickListener,
+        OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Map<String, String> markers2Deals = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+    @TargetApi(Build.VERSION_CODES.CUPCAKE)
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Intent intent = getIntent();
@@ -78,10 +85,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         append("tsToken=IL_AFF_0_209000_515_0&").
                         append("country_code=IL&").
                         append("limit=" + String.valueOf(limitCount) + "&").
-                        append("filters%3Dcategory%3A=" + message).toString());
+                        append("filters=category%3A" + message).toString());
         try {
             List<Marker> markers = loadMarkersFromResponse(response.get(), limitCount);
             chooseZoom2SeeAllMarkers(markers);
+            mMap.setOnInfoWindowClickListener(this);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -126,6 +134,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
                                 .title("Marker in Israel: " + title).snippet("Snippet: text"));
+            markers2Deals.put(marker.getId(), deals.getJSONObject(i).getString("id"));
             result.add(marker);
         }
         return result;
@@ -136,6 +145,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (categoryName != null) {
             setTitle("Map: " + categoryName);
         }
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(this, "Info window clicked for marker with " + markers2Deals.get(marker.getId()),
+                Toast.LENGTH_SHORT).show();
     }
 
     private class GetResponseClass extends AsyncTask<String, Void, String> {
