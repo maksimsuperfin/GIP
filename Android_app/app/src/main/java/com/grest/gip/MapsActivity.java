@@ -120,18 +120,26 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         System.out.println("RESPONSE: " + response);
         JSONObject rec = new JSONObject(response);
         JSONArray deals = new JSONArray(rec.getString("deals"));
-        Map<Double, Double> positions = new HashMap<Double, Double>();
+        //Map<Double, Double> positions = new HashMap<Double, Double>();
         for (int i = 0; i < count; i++) {
             String title = deals.getJSONObject(i).getString("announcementTitle");
-            double latitude = Double.valueOf(new JSONObject(deals.getJSONObject(i).getString("division")).getString("lat"));
-            double longitude = Double.valueOf(new JSONObject(deals.getJSONObject(i).getString("division")).getString("lng"));
+            JSONArray options = deals.getJSONObject(i).getJSONArray("options");
+            JSONArray redemptionLocations = options.getJSONObject(0).getJSONArray("redemptionLocations");
+            JSONObject locationInfo = redemptionLocations.getJSONObject(0);
+            double latitude = Double.valueOf(locationInfo.getString("lat"));
+            double longitude = Double.valueOf(locationInfo.getString("lng"));
+            System.out.println(i + " - " + latitude + " ::: " + longitude);
+            //double latitude = Double.valueOf(new JSONObject(deals.getJSONObject(i).getString("division")).getString("lat"));
+            //double longitude = Double.valueOf(new JSONObject(deals.getJSONObject(i).getString("division")).getString("lng"));
             // this logic was added only because Groupon doesn't return individual coordinates for all deals
-            if (positions.get(latitude) != null) {
+
+            /*if (positions.get(latitude) != null) {
                 positions.put(latitude, longitude);
             } else {
                 latitude = latitude + ThreadLocalRandom.current().nextDouble(0.0001, 0.01);
                 longitude = longitude + ThreadLocalRandom.current().nextDouble(0.0001, 0.01);
-            }
+            }*/
+
             Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
                                 .title("Marker in Israel: " + title).snippet("Snippet: text"));
             markers2Deals.put(marker.getId(), deals.getJSONObject(i).getString("id"));
