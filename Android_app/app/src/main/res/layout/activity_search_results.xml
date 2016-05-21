@@ -27,4 +27,12 @@
         android:onClick="displayResponse"
         android:id="@+id/resultsBtn" />
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/resultsBtn"
+        style="@style/Base.Widget.AppCompat.ListView" />
+
 </RelativeLayout>
