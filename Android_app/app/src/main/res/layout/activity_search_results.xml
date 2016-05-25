@@ -9,30 +9,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.grest.gip.SearchResults">
 
-    <android.widget.EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_above="@+id/resultsBtn"
-        android:layout_alignParentEnd="true" />
-
-    <android.support.v7.widget.AppCompatButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Display results"
-        android:textStyle="bold"
-        android:textSize="16dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="displayResponse"
-        android:id="@+id/resultsBtn" />
-
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/resultsBtn"
         style="@style/Base.Widget.AppCompat.ListView" />
 
 </RelativeLayout>

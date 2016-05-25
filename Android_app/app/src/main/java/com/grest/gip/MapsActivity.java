@@ -107,7 +107,17 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         LatLngBounds bounds = builder.build();
 
         int padding = 0; // offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        System.out.println("bounds: " + bounds);
+        // http://stackoverflow.com/questions/25231949/add-bounds-to-map-to-avoid-swiping-outside-a-certain-region
+        // That code added to fix error message:
+        // java.lang.IllegalStateException: Error using newLatLngBounds(LatLngBounds, int): Map size can't be 0.
+        // Most likely, layout has not yet occured for the map view. Either wait until layout has occurred or use
+        // newLatLngBounds(LatLngBounds, int, int, int) which allows you to specify the map's dimensions.
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        padding = (int) (width * 0.12);
+        //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
         mMap.moveCamera(cu);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mMap.getCameraPosition().target,
                 mMap.getCameraPosition().zoom - 0.25f));
