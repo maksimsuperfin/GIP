@@ -1,0 +1,25 @@
+can show another countries (e.g. for Ireland) 
+Beauty & Spas
+Home improvement
+Hotels
+Tour travel
+Vacation Rental Travel
+
+Without GEO info: 
+Women
+Men
+Auto & Home improvement
+Home and garden goods
+Kids
+
+Has another problems (doesn't display scale):
+Home improvement
+Home Food and drink goods
+Household essentials
+Travel accommodation
+Bad and breakfast travel
+Cabin travel
+Cruise travel
+Resort travel
+Tour travel
+Vacation Rental Travel

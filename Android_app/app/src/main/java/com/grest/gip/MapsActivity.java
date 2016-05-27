@@ -81,7 +81,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         updateTitle(message);
         int limitCount = 10;
         String affiliateID = "209000";
-        String country = "IL"; // TODO: change it later for getting from settings
+        String country = "IE"; // TODO: change it later for getting from settings
         String tsToken = country + "_AFF_0" + affiliateID +
                 GrouponConstants.countries2Codes.get(country) + "_0";
         AsyncTask<String, Void, String> response = new GetResponseClass().execute(
@@ -139,9 +139,21 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             String title = deals.getJSONObject(i).getString("announcementTitle");
             JSONArray options = deals.getJSONObject(i).getJSONArray("options");
             JSONArray redemptionLocations = options.getJSONObject(0).getJSONArray("redemptionLocations");
-            JSONObject locationInfo = redemptionLocations.getJSONObject(0);
-            double latitude = Double.valueOf(locationInfo.getString("lat"));
-            double longitude = Double.valueOf(locationInfo.getString("lng"));
+            double latitude = 0;
+            double longitude = 0;
+            // some items aren't contain information about locations in redemptionLocations tag
+            if (redemptionLocations.length() != 0) {
+                JSONObject locationInfo = redemptionLocations.getJSONObject(0);
+                latitude = Double.valueOf(locationInfo.getString("lat"));
+                longitude = Double.valueOf(locationInfo.getString("lng"));
+
+            } else {
+                // TODO: add logic for getting geo info
+                System.out.println("Category " + getTitle() + " doesn't have needed info");
+                JSONObject division = deals.getJSONObject(i).getJSONObject("division");
+                latitude = Double.valueOf(division.getString("lat"));
+                longitude = Double.valueOf(division.getString("lng"));
+            }
             System.out.println(i + " - " + latitude + " ::: " + longitude);
             //double latitude = Double.valueOf(new JSONObject(deals.getJSONObject(i).getString("division")).getString("lat"));
             //double longitude = Double.valueOf(new JSONObject(deals.getJSONObject(i).getString("division")).getString("lng"));
