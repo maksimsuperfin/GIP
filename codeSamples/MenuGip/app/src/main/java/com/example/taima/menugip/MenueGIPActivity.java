@@ -22,7 +22,7 @@ public class MenueGIPActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.layout.menu, menu); // TODO: in resources no any item with name "menu"
+        menuInflater.inflate(R.layout.menuegip, menu); // TODO: in resources no any item with name "menu"
         return true;
     }
 
