@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.grest.gip.com.grest.gip.dao.Categories;
+import com.grest.gip.com.grest.gip.dao.GrouponConstants;
 
 /**
  * Created by Maksim.Superfin on 5/13/2016.
@@ -23,7 +23,7 @@ public class SearchResults extends AppCompatActivity {
         setContentView(R.layout.activity_search_results);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, Categories.categories);
+                android.R.layout.simple_list_item_1, GrouponConstants.categories);
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(mMessageClickedHandler);
@@ -34,7 +34,7 @@ public class SearchResults extends AppCompatActivity {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             // Do something in response to the click
             Intent intent = new Intent(SearchResults.this, MapsActivity.class);
-            String message = Categories.categories2Abbrevations.get((CharSequence) parent.getAdapter().getItem(position));
+            String message = GrouponConstants.categories2Abbrevations.get((CharSequence) parent.getAdapter().getItem(position));
             intent.putExtra(EXTRA_MESSAGE, message);
             startActivity(intent);
         }

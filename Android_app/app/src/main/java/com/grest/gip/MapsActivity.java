@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.grest.gip.com.grest.gip.dao.Categories;
+import com.grest.gip.com.grest.gip.dao.GrouponConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ThreadLocalRandom;
+
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
 /**
@@ -80,10 +80,14 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         String message = intent.getStringExtra(SearchResults.EXTRA_MESSAGE);
         updateTitle(message);
         int limitCount = 10;
+        String affiliateID = "209000";
+        String country = "IL"; // TODO: change it later for getting from settings
+        String tsToken = country + "_AFF_0" + affiliateID +
+                GrouponConstants.countries2Codes.get(country) + "_0";
         AsyncTask<String, Void, String> response = new GetResponseClass().execute(
                 new StringBuilder("https://partner-int-api.groupon.com/deals?").
-                        append("tsToken=IL_AFF_0_209000_515_0&").
-                        append("country_code=IL&").
+                        append("tsToken=" + tsToken + /*IL_AFF_0_209000_515_0*/"&").
+                        append("country_code=" + country + "&").
                         append("limit=" + String.valueOf(limitCount) + "&").
                         append("filters=category%3A" + message).toString());
         try {
@@ -159,7 +163,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     }
 
     private void updateTitle(String message) {
-        String categoryName = Categories.abbrevations2Categories.get(message);
+        String categoryName = GrouponConstants.abbrevations2Categories.get(message);
         if (categoryName != null) {
             setTitle("Map: " + categoryName);
         }
