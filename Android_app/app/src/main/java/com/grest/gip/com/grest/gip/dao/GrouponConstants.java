@@ -10,6 +10,9 @@ public class GrouponConstants {
     /*
 
     * */
+
+    public static String AFFILIATE_ID = "209000";
+
     public static String[] countries = new String[]
             {"US","AE", "AR", "AT", "BE", "BR", "CH", "CO", "DE", "DK", "ES", "FI", "FR", "GR",
                     "IE", "IL", "IN", "IT", "MX", "NL", "NO", "NZ", "PE", "PH", "PL", "PT",

@@ -1,4 +1,4 @@
-can show another countries (e.g. for Ireland) 
+﻿can show another countries (e.g. for Ireland) 
 Beauty & Spas
 Home improvement
 Hotels
@@ -13,13 +13,14 @@ Home and garden goods
 Kids
 
 Has another problems (doesn't display scale):
-Home improvement
-Home Food and drink goods
-Household essentials
-Travel accommodation
-Bad and breakfast travel
-Cabin travel
-Cruise travel
-Resort travel
-Tour travel
-Vacation Rental Travel
+Home Food and drink goods - reason is 0 items
+Household essentials - reason is 0 items
+Home improvement - reason is items less than 0
+Bed and breakfast travel - reason is items less than 0
+Cabin travel - reason is items less than 0
+Cruise travel - reason is items less than 0
+Resort travel - reason is items less than 0
+Vacation Rental Travel - reason is items less than 0
+Travel accommodation - reason is items doesn't have GEO info 
+{"name":"Cahersiveen","streetAddress1":"Kells","streetAddress2":null,"state":"Kerry","city":"Cahersiveen","postalCode":"Co. Kerry","country":"IE","id":6633804,"uuid":"49c2d2d6-3dcb-b06a-9298-014671ad73d1","ordering":0} doesn't contain any GEO positions for deal with title Co. Kerry Stay With Breakfast #8 
+Tour travel - reason is items doesn't have GEO info {"name":"Amsterdam","streetAddress1":"Leeuwendalersweg 21","streetAddress2":null,"state":null,"city":"Amsterdam","postalCode":"1055JE","country":"NL","id":87315943,"uuid":"39d0fdfa-6d08-b06a-768b-0154c95a9591","ordering":0} doesn't contain any GEO positions for deal with title ✈ 4* Amsterdam With Flights #8

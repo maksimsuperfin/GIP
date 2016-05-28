@@ -51,6 +51,9 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
     private GoogleMap mMap;
     private Map<String, String> markers2Deals = new HashMap<String, String>();
+    private Intent intent;
+    String grouponCategory;
+    String country = "IE"; // TODO: change it later for getting from settings
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,21 +78,19 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     @TargetApi(Build.VERSION_CODES.CUPCAKE)
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Intent intent = getIntent();
+        intent = getIntent();
         mMap = googleMap;
-        String message = intent.getStringExtra(SearchResults.EXTRA_MESSAGE);
-        updateTitle(message);
+        grouponCategory = intent.getStringExtra(SearchResults.EXTRA_MESSAGE);
+        updateTitle(grouponCategory);
         int limitCount = 10;
-        String affiliateID = "209000";
-        String country = "IE"; // TODO: change it later for getting from settings
-        String tsToken = country + "_AFF_0" + affiliateID +
+        String tsToken = country + "_AFF_0" + GrouponConstants.AFFILIATE_ID +
                 GrouponConstants.countries2Codes.get(country) + "_0";
         AsyncTask<String, Void, String> response = new GetResponseClass().execute(
                 new StringBuilder("https://partner-int-api.groupon.com/deals?").
-                        append("tsToken=" + tsToken + /*IL_AFF_0_209000_515_0*/"&").
+                        append("tsToken=" + tsToken + "&").
                         append("country_code=" + country + "&").
                         append("limit=" + String.valueOf(limitCount) + "&").
-                        append("filters=category%3A" + message).toString());
+                        append("filters=category%3A" + grouponCategory).toString());
         try {
             List<Marker> markers = loadMarkersFromResponse(response.get(), limitCount);
             chooseZoom2SeeAllMarkers(markers);
@@ -104,27 +105,33 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     }
 
     private void chooseZoom2SeeAllMarkers(List<Marker> markers) {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : markers) {
-            builder.include(marker.getPosition());
-        }
-        LatLngBounds bounds = builder.build();
+        if (markers.size() > 0) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Marker marker : markers) {
+                builder.include(marker.getPosition());
+            }
+            LatLngBounds bounds = builder.build();
 
-        int padding = 0; // offset from edges of the map in pixels
-        System.out.println("bounds: " + bounds);
-        // http://stackoverflow.com/questions/25231949/add-bounds-to-map-to-avoid-swiping-outside-a-certain-region
-        // That code added to fix error message:
-        // java.lang.IllegalStateException: Error using newLatLngBounds(LatLngBounds, int): Map size can't be 0.
-        // Most likely, layout has not yet occured for the map view. Either wait until layout has occurred or use
-        // newLatLngBounds(LatLngBounds, int, int, int) which allows you to specify the map's dimensions.
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = getResources().getDisplayMetrics().heightPixels;
-        padding = (int) (width * 0.12);
-        //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
-        mMap.moveCamera(cu);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mMap.getCameraPosition().target,
-                mMap.getCameraPosition().zoom - 0.25f));
+            int padding = 0; // offset from edges of the map in pixels
+            System.out.println("bounds: " + bounds);
+            // http://stackoverflow.com/questions/25231949/add-bounds-to-map-to-avoid-swiping-outside-a-certain-region
+            // That code added to fix error message:
+            // java.lang.IllegalStateException: Error using newLatLngBounds(LatLngBounds, int): Map size can't be 0.
+            // Most likely, layout has not yet occured for the map view. Either wait until layout has occurred or use
+            // newLatLngBounds(LatLngBounds, int, int, int) which allows you to specify the map's dimensions.
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int height = getResources().getDisplayMetrics().heightPixels;
+            padding = (int) (width * 0.12);
+            //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+            mMap.moveCamera(cu);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mMap.getCameraPosition().target,
+                    mMap.getCameraPosition().zoom - 0.2f));
+        } else {
+            Toast.makeText(this, "Not found any deals of category " +
+                    GrouponConstants.abbrevations2Categories.get(grouponCategory),
+                    Toast.LENGTH_LONG).show();
+        }
         // to display zoom tool on the map
         mMap.getUiSettings().setZoomControlsEnabled(true);
     }
@@ -134,19 +141,36 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         System.out.println("RESPONSE: " + response);
         JSONObject rec = new JSONObject(response);
         JSONArray deals = new JSONArray(rec.getString("deals"));
+        if (deals.length() == 0) {
+            System.out.println("NOT FOUND ANY DEALS");
+            return result;
+        }
         //Map<Double, Double> positions = new HashMap<Double, Double>();
+        if (count > deals.length()) {
+            count = deals.length();
+        }
+        String countryFromResponse;
+        boolean isCountryValid;
+        double latitude, longitude;
         for (int i = 0; i < count; i++) {
+            isCountryValid = false;
+            latitude = 0;
+            longitude = 0;
             String title = deals.getJSONObject(i).getString("announcementTitle");
             JSONArray options = deals.getJSONObject(i).getJSONArray("options");
             JSONArray redemptionLocations = options.getJSONObject(0).getJSONArray("redemptionLocations");
-            double latitude = 0;
-            double longitude = 0;
             // some items aren't contain information about locations in redemptionLocations tag
             if (redemptionLocations.length() != 0) {
                 JSONObject locationInfo = redemptionLocations.getJSONObject(0);
-                latitude = Double.valueOf(locationInfo.getString("lat"));
-                longitude = Double.valueOf(locationInfo.getString("lng"));
-
+                try {
+                    latitude = Double.valueOf(locationInfo.getString("lat"));
+                    longitude = Double.valueOf(locationInfo.getString("lng"));
+                    countryFromResponse = locationInfo.getString("country");
+                    isCountryValid = (countryFromResponse.equals(country));
+                } catch (JSONException ex) {
+                    System.out.println(locationInfo + " doesn't contain any GEO positions for deal" +
+                            " with title " + title + " #" + i);
+                }
             } else {
                 // TODO: add logic for getting geo info
                 System.out.println("Category " + getTitle() + " doesn't have needed info");
@@ -166,10 +190,12 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
                 longitude = longitude + ThreadLocalRandom.current().nextDouble(0.0001, 0.01);
             }*/
 
-            Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                                .title("Marker in Israel: " + title).snippet("Snippet: text"));
-            markers2Deals.put(marker.getId(), deals.getJSONObject(i).getString("id"));
-            result.add(marker);
+            if (isCountryValid) {
+                Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
+                        .title("Marker in Israel: " + title).snippet("Snippet: text"));
+                markers2Deals.put(marker.getId(), deals.getJSONObject(i).getString("id"));
+                result.add(marker);
+            }
         }
         return result;
     }
