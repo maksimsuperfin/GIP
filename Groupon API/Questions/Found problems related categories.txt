@@ -1,6 +1,6 @@
 ﻿can show another countries (e.g. for Ireland) 
+Home improvement - as some data can be filled with invalid data. e.g.: deals[0] for Ireland has invalid longitude 53.3572085 intead of -7
 Beauty & Spas
-Home improvement
 Hotels
 Tour travel
 Vacation Rental Travel

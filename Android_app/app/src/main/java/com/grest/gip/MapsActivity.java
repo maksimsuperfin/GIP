@@ -157,6 +157,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             latitude = 0;
             longitude = 0;
             String title = deals.getJSONObject(i).getString("announcementTitle");
+            String availableOptions = loadAvailableOptions(deals.getJSONObject(i));
             JSONArray options = deals.getJSONObject(i).getJSONArray("options");
             JSONArray redemptionLocations = options.getJSONObject(0).getJSONArray("redemptionLocations");
             // some items aren't contain information about locations in redemptionLocations tag
@@ -192,12 +193,25 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
             if (isCountryValid) {
                 Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                        .title("Marker in Israel: " + title).snippet("Snippet: text"));
+                        .title(title).snippet(availableOptions));
                 markers2Deals.put(marker.getId(), deals.getJSONObject(i).getString("id"));
                 result.add(marker);
             }
         }
         return result;
+    }
+
+    private String loadAvailableOptions(JSONObject deal) throws JSONException {
+        JSONArray options = new JSONArray(deal.getString("options"));
+        int count = 0;
+        for (int i = 0; i < options.length(); i++) {
+            String status = options.getJSONObject(i).getString("status");
+            System.out.println(i + " status = " + status);
+            if ("open".equals(status)) {
+                count++;
+            }
+        }
+        return String.valueOf(count) + " deal(s) with status OPEN";
     }
 
     private void updateTitle(String message) {
