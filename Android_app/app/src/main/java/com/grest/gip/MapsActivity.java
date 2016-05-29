@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 /*import android.view.View;
 import android.widget.EditText;*/
@@ -54,6 +56,10 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     private Intent intent;
     String grouponCategory;
     String country = "IE"; // TODO: change it later for getting from settings
+    String tsToken = country + "_AFF_0" + GrouponConstants.AFFILIATE_ID +
+            GrouponConstants.countries2Codes.get(country) + "_0";
+    int offset = 0;
+    int limitCount = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +70,18 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Button showMore = (Button) findViewById(R.id.mapShowMore);
+        showMore.setOnClickListener(showMoreListener);
     }
 
+    // Create a message handling object as an anonymous class.
+    private View.OnClickListener showMoreListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            displayDataOnMap();
+        }
+    };
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -82,19 +98,23 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         mMap = googleMap;
         grouponCategory = intent.getStringExtra(SearchResults.EXTRA_MESSAGE);
         updateTitle(grouponCategory);
-        int limitCount = 10;
-        String tsToken = country + "_AFF_0" + GrouponConstants.AFFILIATE_ID +
-                GrouponConstants.countries2Codes.get(country) + "_0";
+        displayDataOnMap();
+    }
+
+    private void displayDataOnMap() {
+        markers2Deals = new HashMap<String, String>();
         AsyncTask<String, Void, String> response = new GetResponseClass().execute(
                 new StringBuilder("https://partner-int-api.groupon.com/deals?").
                         append("tsToken=" + tsToken + "&").
                         append("country_code=" + country + "&").
                         append("limit=" + String.valueOf(limitCount) + "&").
-                        append("filters=category%3A" + grouponCategory).toString());
+                        append("filters=category%3A" + grouponCategory + "&").
+                        append("offset=" + offset).toString());
         try {
             List<Marker> markers = loadMarkersFromResponse(response.get(), limitCount);
             chooseZoom2SeeAllMarkers(markers);
             mMap.setOnInfoWindowClickListener(this);
+            offset += limitCount;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
