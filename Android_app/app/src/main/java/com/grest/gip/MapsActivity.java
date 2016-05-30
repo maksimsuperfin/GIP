@@ -102,6 +102,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     }
 
     private void displayDataOnMap() {
+        mMap.clear();
         markers2Deals = new HashMap<String, String>();
         AsyncTask<String, Void, String> response = new GetResponseClass().execute(
                 new StringBuilder("https://partner-int-api.groupon.com/deals?").
