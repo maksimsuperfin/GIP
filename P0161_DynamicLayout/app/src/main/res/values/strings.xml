@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">P0161_DynamicLayout</string>
+    <color name="gray">#727272</color>
+    <color name="white">#FFFFFF</color>
+    <color name="green">#82b548</color>
+    <color name="red">#ff0035</color>
+    <color name="blue">#0011ff</color>
+    <color name="greendeep">#809c5f</color>
+</resources>

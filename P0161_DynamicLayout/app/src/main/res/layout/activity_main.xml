@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/root"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/green" >
+
+<GridView
+    android:id="@+id/gridview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="40dp"
+    android:background="@color/green"
+    android:columnWidth="90dp"
+    android:gravity="center"
+    android:horizontalSpacing="2.5dp"
+    android:numColumns="2"
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="2.5dp"
+    android:layout_marginTop="50dp"
+
+    />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/greendeep"
+        android:textColor="@color/white"
+        />
+
+</RelativeLayout>

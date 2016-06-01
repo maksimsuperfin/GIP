@@ -30,3 +30,145 @@
        />
 
 </GridLayout>
+import android.app.Activity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends Activity implements View.OnClickListener {
+    LinearLayout llMain;
+    RadioGroup rgGravity;
+    EditText etName;
+    Button btnCreate;
+    Button btnClear;
+
+    int wrapContent = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        llMain = (LinearLayout) findViewById(R.id.llMain);
+        rgGravity = (RadioGroup) findViewById(R.id.rgGravity);
+        etName = (EditText) findViewById(R.id.etName);
+
+        btnCreate = (Button) findViewById(R.id.btnCreate);
+        btnCreate.setOnClickListener(this);
+
+        btnClear = (Button) findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.btnCreate:
+                // ???????? LayoutParams c ??????? ? ??????? ?? ???????????
+                LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                        wrapContent, wrapContent);
+                // ?????????? ??? ???????? ???????? ????????????
+                // ?? ????????? ????? ????? LEFT
+                int btnGravity = Gravity.LEFT;
+                // ??????????, ????? RadioButton "??????" ?
+                // ?????????????? ????????? btnGravity
+                switch (rgGravity.getCheckedRadioButtonId()) {
+                    case R.id.rbLeft:
+                        btnGravity = Gravity.LEFT;
+                        break;
+                    case R.id.rbCenter:
+                        btnGravity = Gravity.CENTER_HORIZONTAL;
+                        break;
+                    case R.id.rbRight:
+                        btnGravity = Gravity.RIGHT;
+                        break;
+                    case R.id.btnClear:
+                        llMain.removeAllViews();
+                        Toast.makeText(this, "???????", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                // ????????? ?????????? ???????? ???????????? ? LayoutParams
+                lParams.gravity = btnGravity;
+
+                // ??????? Button, ????? ????? ? ????????? ? LinearLayout
+                Button btnNew = new Button(this);
+                btnNew.setText(etName.getText().toString());
+                llMain.addView(btnNew, lParams);
+
+                break;
+        }
+    }
+}
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <RadioGroup
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:id="@+id/rgGravity">
+        <RadioButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:checked="true"
+            android:text="Left"
+            android:id="@+id/rbLeft">
+        </RadioButton>
+        <RadioButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Center"
+            android:id="@+id/rbCenter">
+        </RadioButton>
+        <RadioButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Right"
+            android:id="@+id/rbRight">
+        </RadioButton>
+    </RadioGroup>
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/etName"
+            android:fadeScrollbars="true">
+        </EditText>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            android:id="@+id/btnCreate">
+        </Button>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear"
+            android:id="@+id/btnClear">
+        </Button>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/llMain"
+        android:orientation="vertical">
+    </LinearLayout>
+</LinearLayout>
