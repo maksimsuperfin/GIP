@@ -43,6 +43,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.grest.gip.SearchResults" />
         </activity>
+
+        <activity
+            android:name=".DealDetails"
+            android:label="@string/title_deal_details">
+            android:parentActivityName="com.grest.gip.MapsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.grest.gip.MapsActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -244,8 +244,12 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(this, "Info window clicked for marker with " + markers2Deals.get(marker.getId()),
-                Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MapsActivity.this, DealDetails.class);
+        String message = markers2Deals.get(marker.getId());
+        intent.putExtra(SearchResults.EXTRA_MESSAGE, message);
+        startActivity(intent);
+        /*Toast.makeText(this, "Info window clicked for marker with " + markers2Deals.get(marker.getId()),
+                Toast.LENGTH_SHORT).show();*/
     }
 
     private class GetResponseClass extends AsyncTask<String, Void, String> {
