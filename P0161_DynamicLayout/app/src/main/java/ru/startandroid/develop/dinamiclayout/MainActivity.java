@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.Map;
 public class MainActivity extends Activity {
     GridView gridView;
     Button btn;
+    Button btnback;
     ArrayAdapter<String> arrayAdapter;
     boolean isFirstMenuOpened = false;
     static final List<String> itemsMain = new ArrayList<String>();
@@ -35,15 +35,29 @@ public class MainActivity extends Activity {
         itemsFood.add("Restaurants");
         itemsFood.add("Cafe");
     }
-    static final String[] itemsSpa = new String[]{
-            "Spa", "Hears stile", "Mani and Pedicure", "Vocations"};
-    static final String[] itemsShop = new String[]{
-            "Men", "Women", "Kids", "For Home"};
-    static final String[] itemsVacation = new String[]{
-            "Local", "Abroad", "Attractions"};
+    static final List<String>itemsSpa = new ArrayList<String>();
+    static{itemsSpa.add("Spa");
+        itemsSpa.add("Hears stile");
+        itemsSpa.add("Mani and Pedicure");
+        itemsSpa.add("Vocations");
+    }
+    static final ArrayList<String> itemsShop = new ArrayList<>();
+    static {itemsShop.add("Men");
+        itemsShop.add("Women");
+        itemsShop.add("Kids");
+        itemsShop.add("For Home");
+    }
+    static final ArrayList<String> itemsVacation = new ArrayList<>();
+    static { itemsVacation.add("Local");
+        itemsVacation.add("Abroad");
+        itemsVacation.add("Attractions");
+    }
     static final Map<String, List<String>> totalMenu = new HashMap<String, List<String>>();
     static {
         totalMenu.put("Food and Drink", itemsFood);
+        totalMenu.put("Shop",itemsShop);
+        totalMenu.put("Spa/Hear style",itemsSpa);
+        totalMenu.put("Vacations",itemsVacation);
     }
 
     @Override
@@ -70,9 +84,21 @@ public class MainActivity extends Activity {
                 }
             }
         });
+        btnback= (Button) findViewById(R.id.button_back);
+        btnback.setText("Back");
         btn = (Button) findViewById(R.id.button);
         btn.setText("My Home");
+        View.OnClickListener onklBtn=new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    case R.id.button_back:
+                     gridView.setAdapter(arrayAdapter);
+
+                }
+            }
+        };
+
     }
 }
-
 
