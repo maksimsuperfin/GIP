@@ -11,94 +11,104 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends Activity {
     GridView gridView;
     Button btn;
-    Button btnback;
+    Button btnBack;
     ArrayAdapter<String> arrayAdapter;
-    boolean isFirstMenuOpened = false;
-    static final List<String> itemsMain = new ArrayList<String>();
-    static {
-        itemsMain.add("Food and Drink");
-        itemsMain.add("Shop");
-        itemsMain.add("Spa/hear style");
-        itemsMain.add("Vocations");
-    }
-    static final List<String> itemsFood = new ArrayList<String>();
-    static {
-        itemsFood.add("Bars");
-        itemsFood.add("Restaurants");
-        itemsFood.add("Cafe");
-    }
-    static final List<String>itemsSpa = new ArrayList<String>();
-    static{itemsSpa.add("Spa");
-        itemsSpa.add("Hears stile");
-        itemsSpa.add("Mani and Pedicure");
-        itemsSpa.add("Vocations");
-    }
-    static final ArrayList<String> itemsShop = new ArrayList<>();
-    static {itemsShop.add("Men");
-        itemsShop.add("Women");
-        itemsShop.add("Kids");
-        itemsShop.add("For Home");
-    }
-    static final ArrayList<String> itemsVacation = new ArrayList<>();
-    static { itemsVacation.add("Local");
-        itemsVacation.add("Abroad");
-        itemsVacation.add("Attractions");
-    }
-    static final Map<String, List<String>> totalMenu = new HashMap<String, List<String>>();
-    static {
-        totalMenu.put("Food and Drink", itemsFood);
-        totalMenu.put("Shop",itemsShop);
-        totalMenu.put("Spa/Hear style",itemsSpa);
-        totalMenu.put("Vacations",itemsVacation);
-    }
+    boolean isMainMenuOpened = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gridView = (GridView) findViewById(R.id.gridview);
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, itemsMain);
+        arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, MenuConstants.ITEMS_MAIN);
         gridView.setAdapter(arrayAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                if (isFirstMenuOpened) {
+                System.out.println("getText() ::: " + ((TextView) v).getText());
+                if (isMainMenuOpened) {
+                    List<String> tmp = MenuConstants.TOTAL_MENU.get(((TextView) v).getText());
+                    updateAdapterBy(tmp);
+                    isMainMenuOpened = false;
+                } else {
                     Toast.makeText(getApplicationContext(),
                             ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
-                } else {
-                    List<String> tmp = totalMenu.get(((TextView) v).getText());
-                    arrayAdapter.clear();
-                    arrayAdapter.addAll(tmp);
-                    arrayAdapter.notifyDataSetChanged();
-                    isFirstMenuOpened = true;
                 }
+                System.out.println("gridView.setOnItemClickListener ::: " + MenuConstants.ITEMS_MAIN);
             }
         });
-        btnback= (Button) findViewById(R.id.button_back);
-        btnback.setText("Back");
-        btn = (Button) findViewById(R.id.button);
-        btn.setText("My Home");
-        View.OnClickListener onklBtn=new View.OnClickListener() {
+        btnBack = (Button) findViewById(R.id.button_back);
+        btnBack.setText("Back");
+        View.OnClickListener backBtnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()){
-                    case R.id.button_back:
-                     gridView.setAdapter(arrayAdapter);
-
+                System.out.println("back is clicked");
+                if (!isMainMenuOpened) {
+                    System.out.println("Adapter is updated ::: " + MenuConstants.ITEMS_MAIN);
+                    updateAdapterBy(MenuConstants.ITEMS_MAIN);
+                    isMainMenuOpened = true;
                 }
+                System.out.println("onClick ::: " + MenuConstants.ITEMS_MAIN);
             }
         };
+        btnBack.setOnClickListener(backBtnClickListener);
+        btn = (Button) findViewById(R.id.button);
+        btn.setText("My Home");
+        System.out.println("onCreate ::: " + MenuConstants.ITEMS_MAIN);
+    }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void updateAdapterBy(List<String> items) {
+        System.out.println("before updateAdapterBy ::: " + items);
+        arrayAdapter.clear();
+        arrayAdapter.notifyDataSetChanged();
+        arrayAdapter.addAll(items);
+        arrayAdapter.notifyDataSetChanged();
+        System.out.println("updateAdapterBy ::: " + MenuConstants.ITEMS_MAIN);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        System.out.println("onStart ::: " + MenuConstants.ITEMS_MAIN);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("onResume ::: " + MenuConstants.ITEMS_MAIN);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.out.println("onPause ::: " + MenuConstants.ITEMS_MAIN);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("onStop ::: " + MenuConstants.ITEMS_MAIN);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("onDestroy ::: " + MenuConstants.ITEMS_MAIN);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        System.out.println("onRestart ::: " + MenuConstants.ITEMS_MAIN);
     }
 }
 
