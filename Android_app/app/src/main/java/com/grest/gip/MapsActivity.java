@@ -52,6 +52,10 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         OnMapReadyCallback {
     public static final String DEAL_ID_EXTRA_MESSAGE = "DEAL_ID_EXTRA_MESSAGE";
     public static final String OFFSET_EXTRA_MESSAGE = "OFFSET_EXTRA_MESSAGE";
+    public static final String TITLE_EXTRA_MESSAGE = "TITLE_EXTRA_MESSAGE";
+    public static final String FINE_PRINT_EXTRA_MESSAGE = "FINE_PRINT_EXTRA_MESSAGE";
+    public static final String IMAGE_URI_EXTRA_MESSAGE = "IMAGE_URI_EXTRA_MESSAGE";
+
     private GoogleMap mMap;
     private Map<String, String> markers2Deals = new HashMap<String, String>();
     private Intent intent;
@@ -61,6 +65,9 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             GrouponConstants.countries2Codes.get(country) + "_0";
     int offset = 0;
     int offset4CurrentPage = 0;
+    String title;
+    String finePrint;
+    String imageURI;
     int limitCount = 10;
 
     @Override
@@ -183,7 +190,11 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             isCountryValid = false;
             latitude = 0;
             longitude = 0;
-            String title = deals.getJSONObject(i).getString("announcementTitle");
+            String announcementTitle = deals.getJSONObject(i).getString("announcementTitle");
+            title = deals.getJSONObject(i).getString("title");
+            finePrint = deals.getJSONObject(i).getString("finePrint");
+            imageURI = deals.getJSONObject(i).getString("grid4ImageUrl");
+            System.out.println("title: " + title + "\nfinePrint: " + finePrint);
             String availableOptions = loadAvailableOptions(deals.getJSONObject(i));
             JSONArray options = deals.getJSONObject(i).getJSONArray("options");
             JSONArray redemptionLocations = options.getJSONObject(0).getJSONArray("redemptionLocations");
@@ -197,7 +208,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
                     isCountryValid = (countryFromResponse.equals(country));
                 } catch (JSONException ex) {
                     System.out.println(locationInfo + " doesn't contain any GEO positions for deal" +
-                            " with title " + title + " #" + i);
+                            " with title " + announcementTitle + " #" + i);
                 }
             } else {
                 // TODO: add logic for getting geo info
@@ -220,7 +231,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
             if (isCountryValid) {
                 Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                        .title(title).snippet(availableOptions));
+                        .title(announcementTitle).snippet(availableOptions));
                 markers2Deals.put(marker.getId(), deals.getJSONObject(i).getString("id"));
                 result.add(marker);
             }
@@ -255,6 +266,9 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         intent.putExtra(MapsActivity.DEAL_ID_EXTRA_MESSAGE, message);
         intent.putExtra(SearchResults.CATEGORY_EXTRA_MESSAGE, grouponCategory);
         intent.putExtra(MapsActivity.OFFSET_EXTRA_MESSAGE, String.valueOf(offset4CurrentPage));
+        intent.putExtra(MapsActivity.TITLE_EXTRA_MESSAGE, title);
+        intent.putExtra(MapsActivity.FINE_PRINT_EXTRA_MESSAGE, finePrint);
+        intent.putExtra(MapsActivity.IMAGE_URI_EXTRA_MESSAGE, imageURI);
         startActivity(intent);
     }
 

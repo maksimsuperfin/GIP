@@ -1,9 +1,15 @@
 package com.grest.gip;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 /**
@@ -12,19 +18,33 @@ import android.view.MenuItem;
 public class DealDetails extends AppCompatActivity {
 
     String category;
-    String id;
+    //String id;
     String offset;
+    String title;
+    String finePrint;
+    String imageURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results);
+        setContentView(R.layout.deal_details);
         Intent intent = getIntent();
         category = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
-        id = intent.getStringExtra(MapsActivity.DEAL_ID_EXTRA_MESSAGE);
+        //id = intent.getStringExtra(MapsActivity.DEAL_ID_EXTRA_MESSAGE);
         offset = intent.getStringExtra(MapsActivity.OFFSET_EXTRA_MESSAGE);
-        System.out.println("onCreate::: " + category + " " + id);
-        setTitle("Deal details " + id);
+        title = intent.getStringExtra(MapsActivity.TITLE_EXTRA_MESSAGE);
+        finePrint = intent.getStringExtra(MapsActivity.FINE_PRINT_EXTRA_MESSAGE);
+        imageURI = intent.getStringExtra(MapsActivity.IMAGE_URI_EXTRA_MESSAGE);
+        System.out.println("title: " + title + "\nfinePrint: " + finePrint);
+        //System.out.println("onCreate::: " + category + " " + id);
+        setTitle("Deal details "/* + id*/);
+
+        TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvTitle.setText(title);
+        ImageView ivPicture = (ImageView) findViewById(R.id.ivImage);
+        ivPicture.setImageURI(Uri.parse(imageURI));
+        TextView tvFinePrint = (TextView) findViewById(R.id.tvFinePrint);
+        tvFinePrint.setText(finePrint);
     }
 
     @Override
