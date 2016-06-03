@@ -15,7 +15,7 @@ import com.grest.gip.com.grest.gip.dao.GrouponConstants;
  */
 public class SearchResults extends AppCompatActivity {
 
-    public static final String EXTRA_MESSAGE = "com.grest.gip.MESSAGE";
+    public static final String CATEGORY_EXTRA_MESSAGE = "CATEGORY_MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class SearchResults extends AppCompatActivity {
             // Do something in response to the click
             Intent intent = new Intent(SearchResults.this, MapsActivity.class);
             String message = GrouponConstants.categories2Abbrevations.get((CharSequence) parent.getAdapter().getItem(position));
-            intent.putExtra(EXTRA_MESSAGE, message);
+            intent.putExtra(CATEGORY_EXTRA_MESSAGE, message);
             startActivity(intent);
         }
     };

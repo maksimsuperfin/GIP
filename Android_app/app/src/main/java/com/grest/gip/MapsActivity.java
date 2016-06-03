@@ -50,7 +50,8 @@ import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
  */
 public class MapsActivity extends AppCompatActivity implements OnInfoWindowClickListener,
         OnMapReadyCallback {
-
+    public static final String DEAL_ID_EXTRA_MESSAGE = "DEAL_ID_EXTRA_MESSAGE";
+    public static final String OFFSET_EXTRA_MESSAGE = "OFFSET_EXTRA_MESSAGE";
     private GoogleMap mMap;
     private Map<String, String> markers2Deals = new HashMap<String, String>();
     private Intent intent;
@@ -59,6 +60,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     String tsToken = country + "_AFF_0" + GrouponConstants.AFFILIATE_ID +
             GrouponConstants.countries2Codes.get(country) + "_0";
     int offset = 0;
+    int offset4CurrentPage = 0;
     int limitCount = 10;
 
     @Override
@@ -96,7 +98,11 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     public void onMapReady(GoogleMap googleMap) {
         intent = getIntent();
         mMap = googleMap;
-        grouponCategory = intent.getStringExtra(SearchResults.EXTRA_MESSAGE);
+        grouponCategory = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
+        String offsetStr = intent.getStringExtra(MapsActivity.OFFSET_EXTRA_MESSAGE);
+        if (offsetStr != null) {
+            offset = Integer.valueOf(offsetStr);
+        }
         updateTitle(grouponCategory);
         displayDataOnMap();
     }
@@ -104,6 +110,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     private void displayDataOnMap() {
         mMap.clear();
         markers2Deals = new HashMap<String, String>();
+        offset4CurrentPage = offset;
         AsyncTask<String, Void, String> response = new GetResponseClass().execute(
                 new StringBuilder("https://partner-int-api.groupon.com/deals?").
                         append("tsToken=" + tsToken + "&").
@@ -134,7 +141,6 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             LatLngBounds bounds = builder.build();
 
             int padding = 0; // offset from edges of the map in pixels
-            System.out.println("bounds: " + bounds);
             // http://stackoverflow.com/questions/25231949/add-bounds-to-map-to-avoid-swiping-outside-a-certain-region
             // That code added to fix error message:
             // java.lang.IllegalStateException: Error using newLatLngBounds(LatLngBounds, int): Map size can't be 0.
@@ -246,10 +252,10 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     public void onInfoWindowClick(Marker marker) {
         Intent intent = new Intent(MapsActivity.this, DealDetails.class);
         String message = markers2Deals.get(marker.getId());
-        intent.putExtra(SearchResults.EXTRA_MESSAGE, message);
+        intent.putExtra(MapsActivity.DEAL_ID_EXTRA_MESSAGE, message);
+        intent.putExtra(SearchResults.CATEGORY_EXTRA_MESSAGE, grouponCategory);
+        intent.putExtra(MapsActivity.OFFSET_EXTRA_MESSAGE, String.valueOf(offset4CurrentPage));
         startActivity(intent);
-        /*Toast.makeText(this, "Info window clicked for marker with " + markers2Deals.get(marker.getId()),
-                Toast.LENGTH_SHORT).show();*/
     }
 
     private class GetResponseClass extends AsyncTask<String, Void, String> {
