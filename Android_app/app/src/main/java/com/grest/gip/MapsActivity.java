@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.grest.gip.com.grest.gip.dao.GrouponDeal;
 
 /**
  * Created by Maksim.Superfin on 5/13/2016.
@@ -58,6 +59,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
     private GoogleMap mMap;
     private Map<String, String> markers2Deals = new HashMap<String, String>();
+    private Map<String, GrouponDeal> dealDetails;
     private Intent intent;
     String grouponCategory;
     String country = "IE"; // TODO: change it later for getting from settings
@@ -65,9 +67,6 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             GrouponConstants.countries2Codes.get(country) + "_0";
     int offset = 0;
     int offset4CurrentPage = 0;
-    String title;
-    String finePrint;
-    String imageURI;
     int limitCount = 10;
 
     @Override
@@ -105,6 +104,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     public void onMapReady(GoogleMap googleMap) {
         intent = getIntent();
         mMap = googleMap;
+        dealDetails = new HashMap<String, GrouponDeal>();
         grouponCategory = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
         String offsetStr = intent.getStringExtra(MapsActivity.OFFSET_EXTRA_MESSAGE);
         if (offsetStr != null) {
@@ -191,9 +191,9 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             latitude = 0;
             longitude = 0;
             String announcementTitle = deals.getJSONObject(i).getString("announcementTitle");
-            title = deals.getJSONObject(i).getString("title");
-            finePrint = deals.getJSONObject(i).getString("finePrint");
-            imageURI = deals.getJSONObject(i).getString("grid4ImageUrl");
+            String title = deals.getJSONObject(i).getString("title");
+            String finePrint = deals.getJSONObject(i).getString("finePrint");
+            String imageURI = deals.getJSONObject(i).getString("largeImageUrl");
             System.out.println("title: " + title + "\nfinePrint: " + finePrint);
             String availableOptions = loadAvailableOptions(deals.getJSONObject(i));
             JSONArray options = deals.getJSONObject(i).getJSONArray("options");
@@ -232,10 +232,22 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             if (isCountryValid) {
                 Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
                         .title(announcementTitle).snippet(availableOptions));
-                markers2Deals.put(marker.getId(), deals.getJSONObject(i).getString("id"));
+                String dealID = deals.getJSONObject(i).getString("id");
+                markers2Deals.put(marker.getId(), dealID);
+                GrouponDeal deal = loadNewDeal(marker.getId(), title, finePrint, imageURI);
+                dealDetails.put(dealID, deal);
                 result.add(marker);
             }
         }
+        return result;
+    }
+
+    private GrouponDeal loadNewDeal(String id, String title, String finePrint, String imageURI) {
+        GrouponDeal result = new GrouponDeal();
+        result.setId(id);
+        result.setTitle(title);
+        result.setFinePrint(finePrint);
+        result.setImageURI(imageURI);
         return result;
     }
 
@@ -262,13 +274,13 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     @Override
     public void onInfoWindowClick(Marker marker) {
         Intent intent = new Intent(MapsActivity.this, DealDetails.class);
-        String message = markers2Deals.get(marker.getId());
-        intent.putExtra(MapsActivity.DEAL_ID_EXTRA_MESSAGE, message);
+        String id = markers2Deals.get(marker.getId());
+        intent.putExtra(MapsActivity.DEAL_ID_EXTRA_MESSAGE, id);
         intent.putExtra(SearchResults.CATEGORY_EXTRA_MESSAGE, grouponCategory);
         intent.putExtra(MapsActivity.OFFSET_EXTRA_MESSAGE, String.valueOf(offset4CurrentPage));
-        intent.putExtra(MapsActivity.TITLE_EXTRA_MESSAGE, title);
-        intent.putExtra(MapsActivity.FINE_PRINT_EXTRA_MESSAGE, finePrint);
-        intent.putExtra(MapsActivity.IMAGE_URI_EXTRA_MESSAGE, imageURI);
+        intent.putExtra(MapsActivity.TITLE_EXTRA_MESSAGE, dealDetails.get(id).getTitle());
+        intent.putExtra(MapsActivity.FINE_PRINT_EXTRA_MESSAGE, dealDetails.get(id).getFinePrint());
+        intent.putExtra(MapsActivity.IMAGE_URI_EXTRA_MESSAGE, dealDetails.get(id).getImageURI());
         startActivity(intent);
     }
 

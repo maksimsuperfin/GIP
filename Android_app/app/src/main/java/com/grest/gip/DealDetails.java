@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * Created by Maksim.Superfin on 6/1/2016.
@@ -42,9 +43,25 @@ public class DealDetails extends AppCompatActivity {
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(title);
         ImageView ivPicture = (ImageView) findViewById(R.id.ivImage);
-        ivPicture.setImageURI(Uri.parse(imageURI));
+        //ivPicture.setImageURI(Uri.parse(imageURI));
         TextView tvFinePrint = (TextView) findViewById(R.id.tvFinePrint);
-        tvFinePrint.setText(finePrint);
+        tvFinePrint.setText(Html.fromHtml(finePrint));
+
+        // https://github.com/nostra13/Android-Universal-Image-Loader
+        // that library was recommended on SOF
+        // http://stackoverflow.com/questions/18210700/best-method-to-download-image-from-url-in-android
+        // library has license http://www.apache.org/licenses/LICENSE-2.0
+        // TODO: check if the license can be used in our commercial application
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+            .defaultDisplayImageOptions(defaultOptions)
+            .build();
+        ImageLoader imageLoader = ImageLoader.getInstance();
+        imageLoader.init(config);
+        imageLoader.displayImage(imageURI, ivPicture);
     }
 
     @Override
