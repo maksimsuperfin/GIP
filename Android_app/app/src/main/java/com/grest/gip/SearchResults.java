@@ -15,7 +15,7 @@ import com.grest.gip.com.grest.gip.dao.GrouponConstants;
  */
 public class SearchResults extends AppCompatActivity {
 
-    public static final String CATEGORY_EXTRA_MESSAGE = "CATEGORY_MESSAGE";
+    public static final String CATEGORY_EXTRA_MESSAGE = "com.grest.gip.CATEGORY_MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

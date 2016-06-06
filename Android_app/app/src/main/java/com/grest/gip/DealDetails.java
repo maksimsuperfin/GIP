@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.grest.gip.com.grest.gip.dao.GrouponDealObject;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -19,7 +20,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class DealDetails extends AppCompatActivity {
 
     String category;
-    //String id;
     String offset;
     String title;
     String finePrint;
@@ -31,11 +31,11 @@ public class DealDetails extends AppCompatActivity {
         setContentView(R.layout.deal_details);
         Intent intent = getIntent();
         category = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
-        //id = intent.getStringExtra(MapsActivity.DEAL_ID_EXTRA_MESSAGE);
         offset = intent.getStringExtra(MapsActivity.OFFSET_EXTRA_MESSAGE);
-        title = intent.getStringExtra(MapsActivity.TITLE_EXTRA_MESSAGE);
-        finePrint = intent.getStringExtra(MapsActivity.FINE_PRINT_EXTRA_MESSAGE);
-        imageURI = intent.getStringExtra(MapsActivity.IMAGE_URI_EXTRA_MESSAGE);
+        GrouponDealObject object = intent.getParcelableExtra(GrouponDealObject.class.getCanonicalName());
+        title = object.getTitle();
+        finePrint = object.getFinePrint();
+        imageURI = object.getGrid6ImageUrl();
         System.out.println("title: " + title + "\nfinePrint: " + finePrint);
         //System.out.println("onCreate::: " + category + " " + id);
         setTitle("Deal details "/* + id*/);
@@ -43,7 +43,6 @@ public class DealDetails extends AppCompatActivity {
         TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvTitle.setText(title);
         ImageView ivPicture = (ImageView) findViewById(R.id.ivImage);
-        //ivPicture.setImageURI(Uri.parse(imageURI));
         TextView tvFinePrint = (TextView) findViewById(R.id.tvFinePrint);
         tvFinePrint.setText(Html.fromHtml(finePrint));
 
