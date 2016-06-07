@@ -45,6 +45,7 @@ import java.util.concurrent.ExecutionException;
 
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.grest.gip.com.grest.gip.dao.GrouponDealObject;
+import com.grest.gip.com.grest.gip.dao.GrouponDealOption;
 
 /**
  * Created by Maksim.Superfin on 5/13/2016.
@@ -184,6 +185,8 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         double latitude, longitude;
         GrouponDealObject object;
         String announcementTitle, title, finePrint, imageURI, dealID;
+        List<GrouponDealOption> dealOptions;
+        GrouponDealOption dealOption;
         for (int i = 0; i < count; i++) {
             isCountryValid = false;
             latitude = 0;
@@ -194,6 +197,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             imageURI = deals.getJSONObject(i).getString("largeImageUrl");
             System.out.println("title: " + title + "\nfinePrint: " + finePrint);
             String availableOptions = loadAvailableOptions(deals.getJSONObject(i));
+            dealOptions = new ArrayList<GrouponDealOption>();
             JSONArray options = deals.getJSONObject(i).getJSONArray("options");
             JSONArray redemptionLocations = options.getJSONObject(0).getJSONArray("redemptionLocations");
             // some items aren't contain information about locations in redemptionLocations tag
@@ -215,6 +219,17 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
                 latitude = Double.valueOf(division.getString("lat"));
                 longitude = Double.valueOf(division.getString("lng"));
             }
+            object = new GrouponDealObject();
+            dealOptions = new ArrayList<GrouponDealOption>();
+            for (int j = 0; j < options.length(); j++) {
+                dealOption = new GrouponDealOption();
+                dealOption.setBuyUrl(options.getJSONObject(j).getString("buyUrl"));
+                dealOption.setDetails(options.getJSONObject(j).getJSONArray("details").getJSONObject(0).getString("description"));
+                dealOption.setPrice(options.getJSONObject(j).getJSONObject("price").getString("formattedAmount"));
+                dealOption.setTitle(options.getJSONObject(j).getString("title"));
+                dealOptions.add(dealOption);
+            }
+            object.setOptions(dealOptions);
             System.out.println(i + " - " + latitude + " ::: " + longitude);
             //double latitude = Double.valueOf(new JSONObject(deals.getJSONObject(i).getString("division")).getString("lat"));
             //double longitude = Double.valueOf(new JSONObject(deals.getJSONObject(i).getString("division")).getString("lng"));
@@ -233,7 +248,6 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
                 dealID = deals.getJSONObject(i).getString("id");
                 markers2Deals.put(marker.getId(), dealID);
 
-                object = new GrouponDealObject();
                 object.setId(dealID);
                 object.setAnnouncementTitle(announcementTitle);
                 object.setTitle(title);

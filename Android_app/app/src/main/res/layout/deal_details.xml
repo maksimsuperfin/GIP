@@ -27,5 +27,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvFinePrint"
         android:layout_below="@+id/ivImage"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvAdditionalInfo"
+        android:layout_below="@+id/tvFinePrint"/>
 
 </RelativeLayout>

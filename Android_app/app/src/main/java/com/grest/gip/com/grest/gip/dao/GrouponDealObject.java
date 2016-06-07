@@ -2,6 +2,8 @@ package com.grest.gip.com.grest.gip.dao;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,13 +17,13 @@ public class GrouponDealObject implements Parcelable {
     //String shortAnnouncementTitle;
     String finePrint;
     String grid6ImageUrl;
-    //List<GrouponDealOption> options;
+    List<GrouponDealOption> options = new ArrayList<GrouponDealOption>();
 
     public GrouponDealObject() {
 
     }
 
-    public GrouponDealObject(Parcel in) {
+    protected GrouponDealObject(Parcel in) {
         id = in.readString();
         dealUrl = in.readString();
         title = in.readString();
@@ -29,6 +31,7 @@ public class GrouponDealObject implements Parcelable {
         //shortAnnouncementTitle = in.readString();
         finePrint = in.readString();
         grid6ImageUrl = in.readString();
+        options = in.readArrayList(GrouponDealOption.class.getClassLoader());
     }
 
     @Override
@@ -40,6 +43,7 @@ public class GrouponDealObject implements Parcelable {
         //dest.writeString(shortAnnouncementTitle);
         dest.writeString(finePrint);
         dest.writeString(grid6ImageUrl);
+        dest.writeList(options);
     }
 
     @Override
@@ -113,5 +117,13 @@ public class GrouponDealObject implements Parcelable {
 
     public void setGrid6ImageUrl(String grid6ImageUrl) {
         this.grid6ImageUrl = grid6ImageUrl;
+    }
+
+    public List<GrouponDealOption> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<GrouponDealOption> options) {
+        this.options = options;
     }
 }

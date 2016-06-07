@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.grest.gip.com.grest.gip.dao.GrouponDealObject;
+import com.grest.gip.com.grest.gip.dao.GrouponDealOption;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import java.util.List;
 
 /**
  * Created by Maksim.Superfin on 6/1/2016.
@@ -21,9 +24,6 @@ public class DealDetails extends AppCompatActivity {
 
     String category;
     String offset;
-    String title;
-    String finePrint;
-    String imageURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +33,10 @@ public class DealDetails extends AppCompatActivity {
         category = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
         offset = intent.getStringExtra(MapsActivity.OFFSET_EXTRA_MESSAGE);
         GrouponDealObject object = intent.getParcelableExtra(GrouponDealObject.class.getCanonicalName());
-        title = object.getTitle();
-        finePrint = object.getFinePrint();
-        imageURI = object.getGrid6ImageUrl();
+        String title = object.getTitle();
+        String finePrint = object.getFinePrint();
+        String imageURI = object.getGrid6ImageUrl();
+        List<GrouponDealOption> dealOptions = object.getOptions();
         System.out.println("title: " + title + "\nfinePrint: " + finePrint);
         //System.out.println("onCreate::: " + category + " " + id);
         setTitle("Deal details "/* + id*/);
@@ -45,6 +46,12 @@ public class DealDetails extends AppCompatActivity {
         ImageView ivPicture = (ImageView) findViewById(R.id.ivImage);
         TextView tvFinePrint = (TextView) findViewById(R.id.tvFinePrint);
         tvFinePrint.setText(Html.fromHtml(finePrint));
+        TextView tvAdditionalInfo = (TextView) findViewById(R.id.tvAdditionalInfo);
+        String additionalInfo = "Title:" + dealOptions.get(0).getTitle() +
+                                //"\nDetails: " + dealOptions.get(0).getDetails() +
+                                "\nPrice: " + dealOptions.get(0).getPrice() +
+                                "\nBuyUrl: " + dealOptions.get(0).getBuyUrl();
+        tvAdditionalInfo.setText(additionalInfo);
 
         // https://github.com/nostra13/Android-Universal-Image-Loader
         // that library was recommended on SOF
