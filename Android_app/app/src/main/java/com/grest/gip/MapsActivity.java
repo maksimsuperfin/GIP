@@ -44,22 +44,18 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
-import com.grest.gip.com.grest.gip.dao.GrouponDeal;
+import com.grest.gip.com.grest.gip.dao.GrouponDealObject;
 
 /**
  * Created by Maksim.Superfin on 5/13/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnInfoWindowClickListener,
         OnMapReadyCallback {
-    public static final String DEAL_ID_EXTRA_MESSAGE = "DEAL_ID_EXTRA_MESSAGE";
-    public static final String OFFSET_EXTRA_MESSAGE = "OFFSET_EXTRA_MESSAGE";
-    public static final String TITLE_EXTRA_MESSAGE = "TITLE_EXTRA_MESSAGE";
-    public static final String FINE_PRINT_EXTRA_MESSAGE = "FINE_PRINT_EXTRA_MESSAGE";
-    public static final String IMAGE_URI_EXTRA_MESSAGE = "IMAGE_URI_EXTRA_MESSAGE";
+    public static final String OFFSET_EXTRA_MESSAGE = "com.grest.gip.OFFSET_EXTRA_MESSAGE";
 
     private GoogleMap mMap;
     private Map<String, String> markers2Deals = new HashMap<String, String>();
-    private Map<String, GrouponDeal> dealDetails;
+    private Map<String, GrouponDealObject> dealsDetails;
     private Intent intent;
     String grouponCategory;
     String country = "IE"; // TODO: change it later for getting from settings
@@ -104,7 +100,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     public void onMapReady(GoogleMap googleMap) {
         intent = getIntent();
         mMap = googleMap;
-        dealDetails = new HashMap<String, GrouponDeal>();
+        dealsDetails = new HashMap<String, GrouponDealObject>();
         grouponCategory = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
         String offsetStr = intent.getStringExtra(MapsActivity.OFFSET_EXTRA_MESSAGE);
         if (offsetStr != null) {
@@ -186,14 +182,16 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         String countryFromResponse;
         boolean isCountryValid;
         double latitude, longitude;
+        GrouponDealObject object;
+        String announcementTitle, title, finePrint, imageURI, dealID;
         for (int i = 0; i < count; i++) {
             isCountryValid = false;
             latitude = 0;
             longitude = 0;
-            String announcementTitle = deals.getJSONObject(i).getString("announcementTitle");
-            String title = deals.getJSONObject(i).getString("title");
-            String finePrint = deals.getJSONObject(i).getString("finePrint");
-            String imageURI = deals.getJSONObject(i).getString("largeImageUrl");
+            announcementTitle = deals.getJSONObject(i).getString("announcementTitle");
+            title = deals.getJSONObject(i).getString("title");
+            finePrint = deals.getJSONObject(i).getString("finePrint");
+            imageURI = deals.getJSONObject(i).getString("largeImageUrl");
             System.out.println("title: " + title + "\nfinePrint: " + finePrint);
             String availableOptions = loadAvailableOptions(deals.getJSONObject(i));
             JSONArray options = deals.getJSONObject(i).getJSONArray("options");
@@ -232,22 +230,19 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             if (isCountryValid) {
                 Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
                         .title(announcementTitle).snippet(availableOptions));
-                String dealID = deals.getJSONObject(i).getString("id");
+                dealID = deals.getJSONObject(i).getString("id");
                 markers2Deals.put(marker.getId(), dealID);
-                GrouponDeal deal = loadNewDeal(marker.getId(), title, finePrint, imageURI);
-                dealDetails.put(dealID, deal);
+
+                object = new GrouponDealObject();
+                object.setId(dealID);
+                object.setAnnouncementTitle(announcementTitle);
+                object.setTitle(title);
+                object.setFinePrint(finePrint);
+                object.setGrid6ImageUrl(imageURI);
+                dealsDetails.put(dealID, object);
                 result.add(marker);
             }
         }
-        return result;
-    }
-
-    private GrouponDeal loadNewDeal(String id, String title, String finePrint, String imageURI) {
-        GrouponDeal result = new GrouponDeal();
-        result.setId(id);
-        result.setTitle(title);
-        result.setFinePrint(finePrint);
-        result.setImageURI(imageURI);
         return result;
     }
 
@@ -275,12 +270,9 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     public void onInfoWindowClick(Marker marker) {
         Intent intent = new Intent(MapsActivity.this, DealDetails.class);
         String id = markers2Deals.get(marker.getId());
-        intent.putExtra(MapsActivity.DEAL_ID_EXTRA_MESSAGE, id);
         intent.putExtra(SearchResults.CATEGORY_EXTRA_MESSAGE, grouponCategory);
         intent.putExtra(MapsActivity.OFFSET_EXTRA_MESSAGE, String.valueOf(offset4CurrentPage));
-        intent.putExtra(MapsActivity.TITLE_EXTRA_MESSAGE, dealDetails.get(id).getTitle());
-        intent.putExtra(MapsActivity.FINE_PRINT_EXTRA_MESSAGE, dealDetails.get(id).getFinePrint());
-        intent.putExtra(MapsActivity.IMAGE_URI_EXTRA_MESSAGE, dealDetails.get(id).getImageURI());
+        intent.putExtra(GrouponDealObject.class.getCanonicalName(), dealsDetails.get(id));
         startActivity(intent);
     }
 
