@@ -1,7 +1,7 @@
 package com.grest.gip;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,7 +13,7 @@ import com.grest.gip.com.grest.gip.dao.GrouponConstants;
 /**
  * Created by Maksim.Superfin on 5/13/2016.
  */
-public class SearchResults extends AppCompatActivity {
+public class SearchResults extends Activity {
 
     public static final String CATEGORY_EXTRA_MESSAGE = "CATEGORY_MESSAGE";
 
