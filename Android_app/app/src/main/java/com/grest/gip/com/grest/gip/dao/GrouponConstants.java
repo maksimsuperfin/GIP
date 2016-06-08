@@ -35,19 +35,18 @@ public class GrouponConstants {
 
 
     public static String[] categories = new String[]
-            {"Food & Drink", "Beauty & spas", "Women", "Men", "Home improvement",
-                    "Auto and home improvement", "Home: Food & drink goods",
-                    "Home & garden goods", "Household essentials" ,"Kids",
-                    "Travel accommodation", "Bed & breakfast travel", "Cabin travel",
+            {"Food & Drink", "Beauty & spas", "Women", "Men", "Auto and home improvement",
+                    "Home: Food & drink goods", "Home & garden goods", "Household essentials",
+                    "Kids", "Travel accommodation", "Bed & breakfast travel", "Cabin travel",
                     "Cruise travel", "Hotels", "Resort travel", "Tour travel",
                     "Vacation rental travel"
             };
     public static String[] categoriesAPI = new String[]
-            {"food-and-drink", "beauty-and-spas", "women", "men", "home-improvement",
-                    "auto-and-home-improvement", "food-and-drink-goods", "home-and-garden-goods",
-                    "household-essentials", "baby-kids-and-toys", "accommodation",
-                    "bed-and-breakfast-travel", "cabin-travel", "cruise-travel", "hotels",
-                    "resort-travel", "tour-travel", "vacation-rental-travel"
+            {"food-and-drink", "beauty-and-spas", "women", "men",
+                    "home-improvement|auto-and-home-improvement", "food-and-drink-goods",
+                    "home-and-garden-goods", "household-essentials", "baby-kids-and-toys",
+                    "accommodation", "bed-and-breakfast-travel", "cabin-travel", "cruise-travel",
+                    "hotels", "resort-travel", "tour-travel", "vacation-rental-travel"
             };
 
     public static Map<String, String> categories2Abbrevations = new HashMap<String, String>();

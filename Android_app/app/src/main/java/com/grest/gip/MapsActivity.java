@@ -184,7 +184,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         boolean isCountryValid;
         double latitude, longitude;
         GrouponDealObject object;
-        String announcementTitle, title, finePrint, imageURI, dealID;
+        String announcementTitle, title, finePrint, imageURI, dealID, merchantName;
         List<GrouponDealOption> dealOptions;
         GrouponDealOption dealOption;
         for (int i = 0; i < count; i++) {
@@ -195,8 +195,8 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             title = deals.getJSONObject(i).getString("title");
             finePrint = deals.getJSONObject(i).getString("finePrint");
             imageURI = deals.getJSONObject(i).getString("largeImageUrl");
+            merchantName = deals.getJSONObject(i).getJSONObject("merchant").getString("name");
             System.out.println("title: " + title + "\nfinePrint: " + finePrint);
-            String availableOptions = loadAvailableOptions(deals.getJSONObject(i));
             dealOptions = new ArrayList<GrouponDealOption>();
             JSONArray options = deals.getJSONObject(i).getJSONArray("options");
             JSONArray redemptionLocations = options.getJSONObject(0).getJSONArray("redemptionLocations");
@@ -244,7 +244,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
             if (isCountryValid) {
                 Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                        .title(announcementTitle).snippet(availableOptions));
+                        .title(announcementTitle).snippet(merchantName));
                 dealID = deals.getJSONObject(i).getString("id");
                 markers2Deals.put(marker.getId(), dealID);
 
@@ -258,19 +258,6 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             }
         }
         return result;
-    }
-
-    private String loadAvailableOptions(JSONObject deal) throws JSONException {
-        JSONArray options = new JSONArray(deal.getString("options"));
-        int count = 0;
-        for (int i = 0; i < options.length(); i++) {
-            String status = options.getJSONObject(i).getString("status");
-            System.out.println(i + " status = " + status);
-            if ("open".equals(status)) {
-                count++;
-            }
-        }
-        return String.valueOf(count) + " deal(s) with status OPEN";
     }
 
     private void updateTitle(String message) {
