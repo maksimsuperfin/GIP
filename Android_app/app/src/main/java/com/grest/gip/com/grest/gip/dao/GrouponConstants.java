@@ -1,5 +1,6 @@
 package com.grest.gip.com.grest.gip.dao;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,14 +8,10 @@ import java.util.Map;
  * Created by Maksim.Superfin on 5/13/2016.
  */
 public class GrouponConstants {
-    /*
-
-    * */
-
     public static String AFFILIATE_ID = "209000";
 
-    public static String[] countries = new String[]
-            {"US","AE", "AR", "AT", "BE", "BR", "CH", "CO", "DE", "DK", "ES", "FI", "FR", "GR",
+    public static String[] countriesAbbr = new String[]
+            {"US", "AE", "AR", "AT", "BE", "BR", "CH", "CO", "DE", "DK", "ES", "FI", "FR", "GR",
                     "IE", "IL", "IN", "IT", "MX", "NL", "NO", "NZ", "PE", "PH", "PL", "PT",
                     "RO", "SE", "SG", "TH", "TR", "UK", "ZA", "AU", "HK", "MY"
             };
@@ -26,13 +23,38 @@ public class GrouponConstants {
                     530, 531, 532, 533, 534, 535
             };
 
+    public static Map<String, Integer> countriesAbbr2Codes = new HashMap<String, Integer>();
+    static {
+        for (int i = 0; i < countriesAbbr.length; i++) {
+            countriesAbbr2Codes.put(countriesAbbr[i], countriesCodes[i]);
+        }
+    }
+
+    public static String[] countries = new String[]
+            {"United States", "United Arab Emirates", "Argentina", "Austria", "Belgium",
+                    "Brazil", "Switzerland", "Colombia", "Germany", "Denmark", "Spain", "Finland",
+                    "France", "Greece", "Ireland", "Israel", "India", "Italy", "Mexico",
+                    "Netherlands", "Norway", "New Zealand", "Peru", "Philippines", "Poland",
+                    "Portugal", "Romania", "Sweden", "Singapore", "Thailand", "Turkey",
+                    "United Kingdom", "South Africa", "Australia", "Hong Kong", "Malaysia"
+            };
+
     public static Map<String, Integer> countries2Codes = new HashMap<String, Integer>();
     static {
-        for (int i = 0; i < countries.length; i++) {
+        for (int i = 0; i < countriesAbbr.length; i++) {
             countries2Codes.put(countries[i], countriesCodes[i]);
         }
     }
 
+    public static String[] sortedCountries = new String[]
+            {"Argentina", "Australia", "Austria", "Belgium", "Brazil", "Colombia", "Denmark",
+                    "Finland", "France", "Germany", "Greece", "Hong Kong", "India", "Ireland",
+                    "Israel", "Italy", "Malaysia", "Mexico", "Netherlands", "New Zealand",
+                    "Norway", "Peru", "Philippines", "Poland", "Portugal", "Romania",
+                    "Singapore", "South Africa", "Spain", "Sweden", "Switzerland",
+                    "Thailand", "Turkey", "United Kingdom", "United Arab Emirates",
+                    "United States"
+            };
 
     public static String[] categories = new String[]
             {"Food & Drink", "Beauty & spas", "Women", "Men", "Auto and home improvement",
@@ -41,6 +63,7 @@ public class GrouponConstants {
                     "Cruise travel", "Hotels", "Resort travel", "Tour travel",
                     "Vacation rental travel"
             };
+
     public static String[] categoriesAPI = new String[]
             {"food-and-drink", "beauty-and-spas", "women", "men",
                     "home-improvement|auto-and-home-improvement", "food-and-drink-goods",

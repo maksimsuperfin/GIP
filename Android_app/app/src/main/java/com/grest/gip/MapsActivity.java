@@ -61,7 +61,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     String grouponCategory;
     String country = "IE"; // TODO: change it later for getting from settings
     String tsToken = country + "_AFF_0" + GrouponConstants.AFFILIATE_ID +
-            GrouponConstants.countries2Codes.get(country) + "_0";
+            GrouponConstants.countriesAbbr2Codes.get(country) + "_0";
     int offset = 0;
     int offset4CurrentPage = 0;
     int limitCount = 10;

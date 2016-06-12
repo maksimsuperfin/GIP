@@ -54,6 +54,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.grest.gip.MapsActivity" />
         </activity>
+
+        <activity
+            android:name=".ToolbarTest"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_maps">
+            android:parentActivityName="com.grest.gip.SearchResults" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.grest.gip.SearchResults" />
+        </activity>
     </application>
 
 </manifest>

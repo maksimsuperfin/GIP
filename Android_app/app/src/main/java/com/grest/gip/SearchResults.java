@@ -1,11 +1,13 @@
 package com.grest.gip;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.grest.gip.com.grest.gip.dao.GrouponConstants;
@@ -13,7 +15,7 @@ import com.grest.gip.com.grest.gip.dao.GrouponConstants;
 /**
  * Created by Maksim.Superfin on 5/13/2016.
  */
-public class SearchResults extends Activity {
+public class SearchResults extends AppCompatActivity {
 
     public static final String CATEGORY_EXTRA_MESSAGE = "com.grest.gip.CATEGORY_MESSAGE";
 
@@ -27,7 +29,17 @@ public class SearchResults extends Activity {
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(mMessageClickedHandler);
+        Button button = (Button) findViewById(R.id.displayToolbar);
+        button.setOnClickListener(toolbarListener);
     }
+
+    private View.OnClickListener toolbarListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(SearchResults.this, ToolbarTest.class);
+            startActivity(intent);
+        }
+    };
 
     // Create a message handling object as an anonymous class.
     private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
