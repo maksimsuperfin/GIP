@@ -19,7 +19,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchResults">
+
+        <activity android:name=".SearchResults"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -54,16 +56,5 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.grest.gip.MapsActivity" />
         </activity>
-
-        <activity
-            android:name=".ToolbarTest"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/title_activity_maps">
-            android:parentActivityName="com.grest.gip.SearchResults" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.grest.gip.SearchResults" />
-        </activity>
     </application>
-
 </manifest>

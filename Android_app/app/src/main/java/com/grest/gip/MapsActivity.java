@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -59,9 +60,8 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     private Map<String, GrouponDealObject> dealsDetails;
     private Intent intent;
     String grouponCategory;
-    String country = "IE"; // TODO: change it later for getting from settings
-    String tsToken = country + "_AFF_0" + GrouponConstants.AFFILIATE_ID +
-            GrouponConstants.countriesAbbr2Codes.get(country) + "_0";
+    String country;
+    String tsToken;
     int offset = 0;
     int offset4CurrentPage = 0;
     int limitCount = 10;
@@ -103,6 +103,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         mMap = googleMap;
         dealsDetails = new HashMap<String, GrouponDealObject>();
         grouponCategory = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
+        country = intent.getStringExtra(SearchResults.COUNTRY_EXTRA_MESSAGE);
         String offsetStr = intent.getStringExtra(MapsActivity.OFFSET_EXTRA_MESSAGE);
         if (offsetStr != null) {
             offset = Integer.valueOf(offsetStr);
@@ -115,6 +116,8 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         mMap.clear();
         markers2Deals = new HashMap<String, String>();
         offset4CurrentPage = offset;
+        tsToken = country + "_AFF_0" + GrouponConstants.AFFILIATE_ID +
+                GrouponConstants.countriesAbbr2Codes.get(country) + "_0";
         AsyncTask<String, Void, String> response = new GetResponseClass().execute(
                 new StringBuilder("https://partner-int-api.groupon.com/deals?").
                         append("tsToken=" + tsToken + "&").
@@ -274,6 +277,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         intent.putExtra(SearchResults.CATEGORY_EXTRA_MESSAGE, grouponCategory);
         intent.putExtra(MapsActivity.OFFSET_EXTRA_MESSAGE, String.valueOf(offset4CurrentPage));
         intent.putExtra(GrouponDealObject.class.getCanonicalName(), dealsDetails.get(id));
+        intent.putExtra(SearchResults.COUNTRY_EXTRA_MESSAGE, country);
         startActivity(intent);
     }
 
@@ -316,6 +320,20 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
             } else {
                 return "";
             }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(MapsActivity.this, SearchResults.class);
+                intent.putExtra(SearchResults.COUNTRY_EXTRA_MESSAGE, country);
+                startActivity(intent);
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

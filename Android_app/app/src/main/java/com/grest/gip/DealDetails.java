@@ -23,6 +23,7 @@ import java.util.List;
 public class DealDetails extends AppCompatActivity {
 
     String category;
+    String country;
     String offset;
 
     @Override
@@ -31,6 +32,7 @@ public class DealDetails extends AppCompatActivity {
         setContentView(R.layout.deal_details);
         Intent intent = getIntent();
         category = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
+        country = intent.getStringExtra(SearchResults.COUNTRY_EXTRA_MESSAGE);
         offset = intent.getStringExtra(MapsActivity.OFFSET_EXTRA_MESSAGE);
         GrouponDealObject object = intent.getParcelableExtra(GrouponDealObject.class.getCanonicalName());
         String title = object.getTitle();
@@ -77,6 +79,7 @@ public class DealDetails extends AppCompatActivity {
                 Intent intent = new Intent(DealDetails.this, MapsActivity.class);
                 intent.putExtra(SearchResults.CATEGORY_EXTRA_MESSAGE, category);
                 intent.putExtra(MapsActivity.OFFSET_EXTRA_MESSAGE, offset);
+                intent.putExtra(SearchResults.COUNTRY_EXTRA_MESSAGE, country);
                 startActivity(intent);
                 onBackPressed();
                 return true;

@@ -39,10 +39,10 @@ public class GrouponConstants {
                     "United Kingdom", "South Africa", "Australia", "Hong Kong", "Malaysia"
             };
 
-    public static Map<String, Integer> countries2Codes = new HashMap<String, Integer>();
+    public static Map<String, String> countries2Codes = new HashMap<String, String>();
     static {
         for (int i = 0; i < countriesAbbr.length; i++) {
-            countries2Codes.put(countries[i], countriesCodes[i]);
+            countries2Codes.put(countries[i], countriesAbbr[i]);
         }
     }
 

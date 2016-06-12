@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by User on 07.06.2016.
+ * Created by Maksim.Superfin on 07.06.2016.
  */
 public class GrouponDealOption implements Parcelable {
     String buyUrl;
