@@ -41,6 +41,8 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
         listView.setOnItemClickListener(mMessageClickedHandler);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
         intent = getIntent();
         country = intent.getStringExtra(SearchResults.COUNTRY_EXTRA_MESSAGE);
         if (country == null) {
@@ -78,6 +80,7 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        //toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         return true;
     }
 
