@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">GIP</string>
     <string name="title_activity_maps">Map</string>
+    <color name="green">#82b548</color>
+    <color name="greendeep">#809c5f</color>
+    <color name="white">#FFFFFF</color>
     <string name="google_app_id">just-charger-130718</string>
     <string name="title_deal_details">Deal details</string>
 </resources>

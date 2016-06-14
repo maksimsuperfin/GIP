@@ -14,10 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.grest.gip.com.grest.gip.dao.GrouponConstants;
+
+import java.util.List;
 
 /**
  * Created by Maksim.Superfin on 5/13/2016.
@@ -29,6 +33,10 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
     public static final String CATEGORY_EXTRA_MESSAGE = "com.grest.gip.CATEGORY_MESSAGE";
     public static final String COUNTRY_EXTRA_MESSAGE = "com.grest.gip.COUNTRY_MESSAGE";
 
+    GridView gridView;
+    ArrayAdapter<String> arrayAdapter;
+    boolean isMainMenuOpened = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,22 +44,58 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, GrouponConstants.categories);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        /*ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(mMessageClickedHandler);
+        listView.setOnItemClickListener(mMessageClickedHandler);*/
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         intent = getIntent();
         country = intent.getStringExtra(SearchResults.COUNTRY_EXTRA_MESSAGE);
         if (country == null) {
             country = "IL";
         }
+
+        gridView = (GridView) findViewById(R.id.gridview);
+        arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, GrouponConstants.MENU_ITEMS_MAIN);
+        gridView.setAdapter(arrayAdapter);
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                if (isMainMenuOpened) {
+                    List<String> tmp = GrouponConstants.TOTAL_MENU.get(((TextView) v).getText());
+                    if (tmp != null) {
+                        updateAdapterBy(tmp);
+                    }
+                    isMainMenuOpened = false;
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            ((TextView) v).getText(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        View.OnClickListener backBtnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isMainMenuOpened) {
+                    updateAdapterBy(GrouponConstants.MENU_ITEMS_MAIN);
+                    isMainMenuOpened = true;
+                }
+            }
+        };
+        toolbar.setNavigationOnClickListener(backBtnClickListener);
+    }
+
+    private void updateAdapterBy(List<String> items) {
+        arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, items);
+        gridView.setAdapter(arrayAdapter);
     }
 
     // Create a message handling object as an anonymous class.
-    private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
+    /*private AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView parent, View v, int position, long id) {
             // Do something in response to the click
             Intent intent = new Intent(SearchResults.this, MapsActivity.class);
@@ -61,7 +105,7 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
             intent.putExtra(COUNTRY_EXTRA_MESSAGE, country);
             startActivity(intent);
         }
-    };
+    };*/
 
     public void showCountries(View v) {
         PopupMenu popup = new PopupMenu(this, v, Gravity.RIGHT);
@@ -80,7 +124,7 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setSubtitleTextColor(Color.WHITE);
         toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        //toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         return true;
     }
 
