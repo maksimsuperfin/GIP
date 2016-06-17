@@ -17,9 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.grest.gip.com.grest.gip.dao.GrouponConstants;
-
 import java.util.List;
 
 /**
@@ -27,6 +25,8 @@ import java.util.List;
  */
 public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     Toolbar toolbar;
+    MenuItem countryIconMenuItem;
+    String iconURI;
     private Intent intent;
     String country;
     public static final String CATEGORY_EXTRA_MESSAGE = "com.grest.gip.CATEGORY_MESSAGE";
@@ -48,7 +48,6 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
         if (country == null) {
             country = "IL";
         }
-
         gridView = (GridView) findViewById(R.id.gridview);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_item, GrouponConstants.MENU_ITEMS_MAIN);
         gridView.setAdapter(arrayAdapter);
@@ -81,6 +80,12 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
             }
         };
         toolbar.setNavigationOnClickListener(backBtnClickListener);
+    }
+
+    private int getIconID(String countryAbbr) {
+        String uri = "@drawable/" + countryAbbr.toLowerCase();
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        return imageResource;
     }
 
     private void displayNavigationOnTolbar() {
@@ -123,6 +128,8 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
             displayNavigationOnTolbar();
         }
         toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        countryIconMenuItem = toolbar.getMenu().getItem(0);
+        countryIconMenuItem.setIcon(getDrawable(getIconID(country)));
         return true;
     }
 
@@ -139,9 +146,13 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        String countryCode = GrouponConstants.countries2Codes.get(item.getTitle());
+        String countryName = item.getTitle().toString();
+        String countryCode = GrouponConstants.countries2Codes.get(countryName);
         if (countryCode != null) {
             country = countryCode;
+            countryIconMenuItem.setIcon(getDrawable(getIconID(country)));
+            Toast.makeText(this, countryName + " was selected",
+                    Toast.LENGTH_LONG).show();
             return true;
         } else {
             Toast.makeText(this, "Unknown name of country [" + item.getTitle() + "] was selected",
