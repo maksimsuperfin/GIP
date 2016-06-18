@@ -5,6 +5,12 @@
     android:layout_width="wrap_content"
     tools:context="com.grest.gip.ToolbarTest">
 
+    <item
+        android:id="@+id/iconCountry"
+        android:icon="@drawable/il"
+        android:title=""
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/chooseCountry"
         android:title="Choose country"
         app:showAsAction="never"/>
