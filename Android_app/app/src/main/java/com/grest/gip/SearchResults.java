@@ -26,7 +26,6 @@ import java.util.List;
 public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     Toolbar toolbar;
     MenuItem countryIconMenuItem;
-    String iconURI;
     private Intent intent;
     String country;
     public static final String CATEGORY_EXTRA_MESSAGE = "com.grest.gip.CATEGORY_MESSAGE";
@@ -76,6 +75,8 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
                 if (!isMainMenuOpened) {
                     updateAdapterBy(GrouponConstants.MENU_ITEMS_MAIN);
                     isMainMenuOpened = true;
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    getSupportActionBar().setDisplayShowHomeEnabled(false);
                 }
             }
         };
