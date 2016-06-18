@@ -87,6 +87,7 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+
     }
 
     private void displayResults(AdapterView<?> parent, int position) {
