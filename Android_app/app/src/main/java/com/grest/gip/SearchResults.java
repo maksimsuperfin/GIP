@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
@@ -131,7 +132,8 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
         }
         toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         countryIconMenuItem = toolbar.getMenu().getItem(0);
-        countryIconMenuItem.setIcon(getDrawable(getIconID(country)));
+        countryIconMenuItem.setIcon(
+                ResourcesCompat.getDrawable(getResources(), getIconID(country), null));
         return true;
     }
 
@@ -152,7 +154,8 @@ public class SearchResults extends AppCompatActivity implements PopupMenu.OnMenu
         String countryCode = GrouponConstants.countries2Codes.get(countryName);
         if (countryCode != null) {
             country = countryCode;
-            countryIconMenuItem.setIcon(getDrawable(getIconID(country)));
+            countryIconMenuItem.setIcon(
+                    ResourcesCompat.getDrawable(getResources(), getIconID(country), null));
             Toast.makeText(this, countryName + " was selected",
                     Toast.LENGTH_LONG).show();
             return true;
