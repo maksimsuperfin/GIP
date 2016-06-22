@@ -42,6 +42,7 @@
 
         <activity
             android:name=".MapsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_maps">
             android:parentActivityName="com.grest.gip.SearchResults" >
             <meta-data

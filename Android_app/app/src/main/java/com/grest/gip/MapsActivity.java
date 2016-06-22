@@ -1,18 +1,21 @@
 package com.grest.gip;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-/*import android.view.View;
-import android.widget.EditText;*/
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,11 +26,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.grest.gip.com.grest.gip.dao.GrouponConstants;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +44,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.grest.gip.com.grest.gip.dao.GrouponDealObject;
 import com.grest.gip.com.grest.gip.dao.GrouponDealOption;
@@ -52,9 +52,10 @@ import com.grest.gip.com.grest.gip.dao.GrouponDealOption;
  * Created by Maksim.Superfin on 5/13/2016.
  */
 public class MapsActivity extends AppCompatActivity implements OnInfoWindowClickListener,
-        OnMapReadyCallback {
+        OnMapReadyCallback, PopupMenu.OnMenuItemClickListener {
     public static final String OFFSET_EXTRA_MESSAGE = "com.grest.gip.OFFSET_EXTRA_MESSAGE";
-
+    MenuItem countryIconMenuItem;
+    Toolbar toolbar;
     private GoogleMap mMap;
     private Map<String, String> markers2Deals = new HashMap<String, String>();
     private Map<String, GrouponDealObject> dealsDetails;
@@ -69,8 +70,11 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.title_activity_maps);
         setContentView(R.layout.activity_maps);
+        toolbar = (Toolbar) findViewById(R.id.toolbar1);
+        setSupportActionBar(toolbar);
+        displayNavigationOnTolbar();
+        setTitle(R.string.title_activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -78,6 +82,62 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
         Button showMore = (Button) findViewById(R.id.mapShowMore);
         showMore.setOnClickListener(showMoreListener);
+    }
+
+    private void displayNavigationOnTolbar() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.app_menu, menu);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setSubtitleTextColor(Color.WHITE);
+        displayNavigationOnTolbar();
+        toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        countryIconMenuItem = toolbar.getMenu().getItem(0);
+        countryIconMenuItem.setIcon(
+                ResourcesCompat.getDrawable(getResources(), getIconID(country), null));
+        return true;
+    }
+
+    private int getIconID(String countryAbbr) {
+        String uri = "@drawable/" + countryAbbr.toLowerCase();
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        return imageResource;
+    }
+
+    public void showCountries(View v) {
+        PopupMenu popup = new PopupMenu(this, v, Gravity.RIGHT);
+        for(String country: GrouponConstants.sortedCountries) {
+            popup.getMenu().add(country);
+        }
+        // This activity implements OnMenuItemClickListener
+        popup.setOnMenuItemClickListener(this);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        String countryName = item.getTitle().toString();
+        String countryCode = GrouponConstants.countries2Codes.get(countryName);
+        if (countryCode != null) {
+            country = countryCode;
+            countryIconMenuItem.setIcon(
+                    ResourcesCompat.getDrawable(getResources(), getIconID(country), null));
+            Toast.makeText(this, countryName + " was selected",
+                    Toast.LENGTH_LONG).show();
+            offset = 0;
+            displayDataOnMap();
+            return true;
+        } else {
+            Toast.makeText(this, "Unknown name of country [" + item.getTitle() + "] was selected",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }
     }
 
     // Create a message handling object as an anonymous class.
@@ -96,7 +156,6 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    @TargetApi(Build.VERSION_CODES.CUPCAKE)
     @Override
     public void onMapReady(GoogleMap googleMap) {
         intent = getIntent();
@@ -331,6 +390,9 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
                 intent.putExtra(SearchResults.COUNTRY_EXTRA_MESSAGE, country);
                 startActivity(intent);
                 onBackPressed();
+                return true;
+            case R.id.chooseCountry:
+                showCountries(toolbar);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
