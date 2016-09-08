@@ -1,6 +1,7 @@
 package com.grest.gip;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
@@ -8,13 +9,11 @@ import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +46,7 @@ import java.util.concurrent.ExecutionException;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.grest.gip.com.grest.gip.dao.GrouponDealObject;
 import com.grest.gip.com.grest.gip.dao.GrouponDealOption;
+import com.grest.gip.databinding.ActivityMapsBinding;
 
 /**
  * Created by Maksim.Superfin on 5/13/2016.
@@ -55,7 +55,6 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         OnMapReadyCallback, PopupMenu.OnMenuItemClickListener {
     public static final String OFFSET_EXTRA_MESSAGE = "com.grest.gip.OFFSET_EXTRA_MESSAGE";
     MenuItem countryIconMenuItem;
-    Toolbar toolbar;
     private GoogleMap mMap;
     private Map<String, String> markers2Deals = new HashMap<String, String>();
     private Map<String, GrouponDealObject> dealsDetails;
@@ -66,13 +65,13 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
     int offset = 0;
     int offset4CurrentPage = 0;
     int limitCount = 10;
+    ActivityMapsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        toolbar = (Toolbar) findViewById(R.id.toolbar1);
-        setSupportActionBar(toolbar);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_maps);
+        setSupportActionBar(binding.toolbar1);
         displayNavigationOnTolbar();
         setTitle(R.string.title_activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -80,25 +79,24 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Button showMore = (Button) findViewById(R.id.mapShowMore);
-        showMore.setOnClickListener(showMoreListener);
+        binding.mapShowMore.setOnClickListener(showMoreListener);
     }
 
     private void displayNavigationOnTolbar() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        binding.toolbar1.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.app_menu, menu);
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setSubtitleTextColor(Color.WHITE);
+        binding.toolbar1.setTitleTextColor(Color.WHITE);
+        binding.toolbar1.setSubtitleTextColor(Color.WHITE);
         displayNavigationOnTolbar();
-        toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        countryIconMenuItem = toolbar.getMenu().getItem(0);
+        binding.toolbar1.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        countryIconMenuItem = binding.toolbar1.getMenu().getItem(0);
         countryIconMenuItem.setIcon(
                 ResourcesCompat.getDrawable(getResources(), getIconID(country), null));
         return true;
@@ -392,7 +390,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
                 onBackPressed();
                 return true;
             case R.id.chooseCountry:
-                showCountries(toolbar);
+                showCountries(binding.toolbar1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

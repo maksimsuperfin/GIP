@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.grest.gip.SearchResults"
-    android:background="@color/green">
-
-    <android.support.design.widget.AppBarLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:theme="@style/AppTheme"
-        tools:context="com.grest.gip.SearchResults">
+        android:layout_height="match_parent"
+        tools:context="com.grest.gip.SearchResults"
+        android:background="@color/green">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <android.support.design.widget.AppBarLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:theme="@style/ThemeOverlay.AppCompat.Light" />
-    </android.support.design.widget.AppBarLayout>
+            android:layout_height="wrap_content"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:theme="@style/AppTheme"
+            tools:context="com.grest.gip.SearchResults">
 
-    <GridView
-        android:id="@+id/gridview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:padding="40dp"
-        android:background="@color/green"
-        android:columnWidth="90dp"
-        android:gravity="center"
-        android:horizontalSpacing="2.5dp"
-        android:numColumns="2"
-        android:stretchMode="columnWidth"
-        android:verticalSpacing="2.5dp"
-        android:layout_marginTop="50dp"
-        />
-</android.support.design.widget.CoordinatorLayout>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:theme="@style/ThemeOverlay.AppCompat.Light" />
+        </android.support.design.widget.AppBarLayout>
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="40dp"
+            android:background="@color/green"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="2.5dp"
+            android:numColumns="2"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="2.5dp"
+            android:layout_marginTop="50dp"
+            />
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

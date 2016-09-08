@@ -1,20 +1,18 @@
 package com.grest.gip;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.grest.gip.com.grest.gip.dao.GrouponDealObject;
 import com.grest.gip.com.grest.gip.dao.GrouponDealOption;
+import com.grest.gip.databinding.DealDetailsBinding;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import java.util.List;
 
 /**
@@ -25,11 +23,12 @@ public class DealDetails extends AppCompatActivity {
     String category;
     String country;
     String offset;
+    DealDetailsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.deal_details);
+        binding = DataBindingUtil.setContentView(this, R.layout.deal_details);
         Intent intent = getIntent();
         category = intent.getStringExtra(SearchResults.CATEGORY_EXTRA_MESSAGE);
         country = intent.getStringExtra(SearchResults.COUNTRY_EXTRA_MESSAGE);
@@ -43,17 +42,13 @@ public class DealDetails extends AppCompatActivity {
         //System.out.println("onCreate::: " + category + " " + id);
         setTitle("Deal details "/* + id*/);
 
-        TextView tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvTitle.setText(title);
-        ImageView ivPicture = (ImageView) findViewById(R.id.ivImage);
-        TextView tvFinePrint = (TextView) findViewById(R.id.tvFinePrint);
-        tvFinePrint.setText(Html.fromHtml(finePrint));
-        TextView tvAdditionalInfo = (TextView) findViewById(R.id.tvAdditionalInfo);
+        binding.tvTitle.setText(title);
+        binding.tvFinePrint.setText(Html.fromHtml(finePrint));
         String additionalInfo = "Title:" + dealOptions.get(0).getTitle() +
                                 //"\nDetails: " + dealOptions.get(0).getDetails() +
                                 "\nPrice: " + dealOptions.get(0).getPrice() +
                                 "\nBuyUrl: " + dealOptions.get(0).getBuyUrl();
-        tvAdditionalInfo.setText(additionalInfo);
+        binding.tvAdditionalInfo.setText(additionalInfo);
 
         // https://github.com/nostra13/Android-Universal-Image-Loader
         // that library was recommended on SOF
@@ -69,7 +64,7 @@ public class DealDetails extends AppCompatActivity {
             .build();
         ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.init(config);
-        imageLoader.displayImage(imageURI, ivPicture);
+        imageLoader.displayImage(imageURI, binding.ivImage);
     }
 
     @Override
